@@ -91,14 +91,39 @@ Discute los dilemas éticos de los algoritmos de contratación, la privacidad de
 
 ---
 
-## 🗂️ Estructura del Repositorio de Estudio
+## 🗂️ Estructura Completa del Repositorio de Estudio
 
-Los resúmenes detallados por autor se encuentran organizados en sus respectivas carpetas:
+Cada unidad cuenta con su carpeta dedicada, archivos por autor/documento en Markdown, guía de navegación (`README.md`) y su respectivo **Dossier Académico completo compilado en Typst/PDF**:
 
-* 📁 [`Recursos Humanos 3/Unidad 1/`](<./Unidad%201/>):
+* 📁 [**Unidad 1: Planificación Estratégica de RRHH**](./Unidad%201/):
   * `01_Marianela_Armijo_Planificacion_Estrategica_Sector_Publico.md`
   * `02_Alfredo_Ossorio_Planeamiento_Estrategico.md`
   * `03_Luis_Carlos_Palacios_Acero_Direccion_Estrategica.md`
   * `04_Iglesias_Pagola_Uranga_Enfoques_Planificacion.md`
   * `05_Simon_Dolan_Planificacion_Recursos_Humanos.md`
   * `06_Mendoza_Lopez_Salas_Planificacion_Estrategica_RRHH.md`
+  * `README.md` (Guía de estudio y cuadro comparativo)
+  * 📕 **`Unidad_1_Planificacion_Estrategica_RRHH.pdf`** *(17 páginas)*
+
+* 📁 [**Unidad 2: Auditoría y Control de RRHH**](./Unidad%202/):
+  * `01_Jorge_Hintze_Control_y_Evaluacion_de_Gestion.md`
+  * `02_Remberto_Naranjo_Perez_El_Control_Estrategico.md`
+  * `03_Idalberto_Chiavenato_Sistemas_de_Informacion_RRHH.md`
+  * `04_Vega_Falcon_Auditoria_de_Recursos_Humanos.md`
+  * `README.md` (Guía de estudio y cuadro comparativo)
+  * 📕 **`Unidad_2_Auditoria_y_Control_RRHH.pdf`** *(12 páginas)*
+
+* 📁 [**Unidad 3: Relaciones Humanas y Sociales**](./Unidad%203/):
+  * `01_Francisco_Longo_Relaciones_Humanas_y_Sociales.md`
+  * `02_Idalberto_Chiavenato_Prestaciones_CVT_y_Relaciones.md`
+  * `03_Jorge_Aquino_Relaciones_Gremiales_y_Sindicales.md`
+  * `README.md` (Guía de estudio y cuadro comparativo)
+  * 📕 **`Unidad_3_Relaciones_Humanas_y_Sociales.pdf`** *(13 páginas)*
+
+* 📁 [**Unidad 4: Perspectiva Actual de la Gestión de RRHH e Inteligencia Artificial**](./Unidad%204/):
+  * `01_Cappelli_Rogovsky_IA_en_RRHH.md`
+  * `02_OIT_Estrategia_RRHH_2022_2025.md`
+  * `03_Las_5_Tendencias_Tecnologicas_RRHH.md`
+  * `README.md` (Guía de estudio y cuadro comparativo)
+  * 📕 **`Unidad_4_Perspectiva_Actual_e_IA_en_RRHH.pdf`** *(14 páginas)*
+
