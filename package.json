@@ -1,0 +1,71 @@
+{
+  "name": "notebooklm-research-mcp",
+  "version": "2.1.0",
+  "description": "Advanced MCP Research Suite for Google NotebookLM & Google Antigravity IDE — multi-format ingestion (PDFs/YouTube/Batch), contradiction & gap analysis, research dossiers, and academic citations.",
+  "type": "module",
+  "bin": {
+    "notebooklm-research-mcp": "dist/index.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "postbuild": "node -e \"try { if (process.platform !== 'win32') require('fs').chmodSync('dist/index.js', 0o755); } catch (e) {}\"",
+    "watch": "tsc --watch",
+    "dev": "tsx watch src/index.ts",
+    "prepare": "npm run build",
+    "test": "tsx src/index.ts",
+    "lint": "eslint src",
+    "lint:fix": "eslint src --fix",
+    "format": "prettier --write src",
+    "format:check": "prettier --check src",
+    "check": "npm run format:check && npm run lint && npm run build"
+  },
+  "keywords": [
+    "mcp",
+    "notebooklm",
+    "antigravity",
+    "research",
+    "gemini",
+    "ai",
+    "rag",
+    "claude"
+  ],
+  "author": "Hector Daniel Ayarachi Fuentes",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/HectorDanielAyarachiFuentes/notebooklm-research-mcp.git"
+  },
+  "homepage": "https://github.com/HectorDanielAyarachiFuentes/notebooklm-research-mcp#readme",
+  "bugs": {
+    "url": "https://github.com/HectorDanielAyarachiFuentes/notebooklm-research-mcp/issues"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "NOTEBOOKLM_USAGE.md",
+    "LICENSE",
+    "docs"
+  ],
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.0.0",
+    "@types/pdf-parse": "^1.1.5",
+    "dotenv": "^16.4.0",
+    "env-paths": "^3.0.0",
+    "globby": "^14.1.0",
+    "patchright": "^1.48.2",
+    "pdf-parse": "^2.4.5",
+    "zod": "^3.22.0"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@types/node": "^20.11.0",
+    "eslint": "^10.2.1",
+    "prettier": "^3.8.3",
+    "tsx": "^4.7.0",
+    "typescript": "^5.3.3",
+    "typescript-eslint": "^8.59.1"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "notebooklm": {
+      "command": "node",
+      "args": ["dist/index.js"]
+    }
+  }
+}
