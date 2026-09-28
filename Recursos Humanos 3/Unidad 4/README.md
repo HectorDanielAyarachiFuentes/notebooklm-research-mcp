@@ -1,64 +1,55 @@
 # 🤖 Unidad 4: Perspectiva Actual de la Gestión de RRHH e Inteligencia Artificial
-## Guía de Estudio y Navegación por Autores y Textos
+## Gestión de Recursos Humanos 3 · Carpeta Académica y Dossier de Estudio
 
-Bienvenido a la carpeta de estudio de la **Unidad 4** de **Gestión de Recursos Humanos III**. Esta unidad examina la frontera contemporánea de la disciplina: el impacto disruptivo de la Inteligencia Artificial, el uso de datos masivos (*People Analytics*), la transformación digital de los procesos de nómina y gestión, y las políticas internacionales de trabajo decente, diversidad y ética en entornos híbridos y automatizados.
-
----
-
-## 📑 Índice de Autores y Textos de la Unidad 4
-
-1. 📘 [**01. Peter Cappelli, Nikolai Rogovsky (OIT) & Roberto Salazar Pazmiño**](./01_Cappelli_Rogovsky_IA_en_RRHH.md)
-   * *Temática*: *Inteligencia Artificial en la Gestión de RRHH y Disrupción Tecnológica*.
-   * *Claves*:
-     * Algoritmos de selección y matching (*Random Forest*, NLP en redes sociales y Big Data).
-     * Evaluación técnica objetiva y entrevistas en video asincrónicas con IA (AI-AVI).
-     * El dilema ético: filtros ciegos para reducir sesgos humanos vs. riesgo de amplificación de sesgos históricos; diseño de **algoritmos de salvaguarda**.
-     * Vigilancia digital, invasión de la privacidad y surgimiento de **"Sistemas Salvajes"** (*Shadow IT*).
-     * **Agenda de IA Centrada en el Ser Humano (IACH)** y equipos colaborativos Humano-IA (*Human-AI Teaming*) con autonomía adaptativa.
-     * Realidad Virtual (RV), Realidad Aumentada (RA) y gemelos digitales para puestos no rutinarios y de alto riesgo.
-
-2. 📘 [**02. Organización Internacional del Trabajo (OIT)**](./02_OIT_Estrategia_RRHH_2022_2025.md)
-   * *Documento Oficial*: *Estrategia de Recursos Humanos 2022-2025: Diversidad, Rendición de Cuentas y Respeto* (343.ª reunión del Consejo de Administración).
-   * *Claves*:
-     * **Resultado 1 (Fuerza laboral diversa y competencias de futuro)**: Las **4 esferas transversales de competencias** (Uso de IA, Analítica de datos, Comunicación eficaz, Transición ecológica). Inclusión de personas con discapacidad, pasantías financiadas, ajustes razonables y **Tutorías Inversas** (*Reverse Mentoring*) intergeneracionales.
-     * **Resultado 2 (Entorno respetuoso y empoderamiento)**: Rendición de cuentas (*accountability*) con Comité de Informes; política de teletrabajo híbrido (16% global, 82% satisfacción en conciliación); Comité de Disciplina público con tolerancia cero al acoso y discriminación.
-     * **Resultado 3 (Digitalización y eficiencia)**: Meta del 75% de digitalización de procesos para 2025 y plataformas de autoservicio (SHIF, legajos electrónicos, monitoreo de ausentismo).
-
-3. 📘 [**03. Bejerman RRHH / Thomson Reuters**](./03_Las_5_Tendencias_Tecnologicas_RRHH.md)
-   * *Informe*: *Las 5 Tendencias Tecnológicas para Recursos Humanos*.
-   * *Claves*:
-     * Transición de RRHH: del departamento administrativo al socio estratégico y motor del cambio cultural.
-     * **Las 5 Tendencias**:
-       1. *AFIP 4.0 / Libro de Sueldo Digital*: automatización fiscal y eliminación de contingencias punitorias.
-       2. *Liquidación Cloud*: parametrización multi-convenio colectivo y cálculo estricto del Impuesto a las Ganancias (4ª categoría).
-       3. *People Analytics*: reclutamiento guiado por datos (*data-driven recruitment*) y tableros de control en tiempo real (ausentismo, rotación, costos de capacitación).
-       4. *Autogestión y Teletrabajo*: repositorio único seguro, firma digital de recibos de haberes y trámites desintermediados.
-       5. *Evaluación de Desempeño Digital*: evaluaciones 360°, matriz 9-Box y planes de carrera automatizados.
-     * **Los 3 Pilares de Valor al Negocio**: Gestión estratégica del talento, eficiencia operativa y cumplimiento normativo.
+Bienvenido al repositorio de estudio de la **Unidad 4** de **Gestión de Recursos Humanos 3**. Esta unidad aborda la transformación de la gestión de personas ante la disrupción de la **Inteligencia Artificial (IA)**, el uso de analítica de datos (*People Analytics*), la automatización digital de haberes e integración fiscal (Libro de Sueldo Digital), y las estrategias de inclusión, diversidad y ética laboral (OIT).
 
 ---
 
-## 📊 Matriz Comparativa de la Unidad 4
+## 📚 Materiales de Estudio Disponibles
 
-| Autor / Fuente | Nivel de Análisis | Foco Primordial | Aporte Distintivo para Parcial |
-| :--- | :--- | :--- | :--- |
-| **Cappelli & Rogovsky (OIT) / Salazar Pazmiño** | Teórico-Crítico / Tecnológico | Impacto de la IA y algoritmos en selección, evaluación y ética laboral. | Sesgos algorítmicos vs. algoritmos de salvaguarda; "Sistemas Salvajes"; Agenda de IA Centrada en el Ser Humano (IACH). |
-| **OIT (Estrategia 2022-2025)** | Institucional / Internacional | Modelo integral de gestión de personas para el empleo decente y moderno. | Las 4 competencias transversales; Tutorías Inversas; métricas de teletrabajo (16% global) y rendición de cuentas pública. |
-| **Bejerman RRHH (Thomson Reuters)** | Técnico-Operativo / Empresarial | Soluciones digitales de nómina, analítica y gestión estratégica en la nube. | Las 5 Tendencias (Libro de Sueldo Digital, Liquidación Cloud, People Analytics, Autogestión, Desempeño) y los 3 pilares de valor. |
+Todos los autores y textos cuentan con sus versiones individuales en **PDF de alta calidad tipográfica** (compilados con Typst en la raíz de la unidad), sus **fuentes Typst** organizadas en `typst/`, y sus **resúmenes analíticos exhaustivos en Markdown** en `markdown/`.
+
+| N° | Autor / Texto | Resumen Markdown | Fuente Typst | Documento PDF Final |
+| :---: | :--- | :---: | :---: | :---: |
+| **01** | **Cappelli, Tambe & Rogovsky**<br>_Inteligencia Artificial en la Gestión de RRHH_ | [Ver Markdown](./markdown/01_Cappelli_Rogovsky_IA_en_RRHH.md) | [Ver Typst](./typst/01_Cappelli_Rogovsky_IA_en_RRHH.typ) | [📄 **Descargar PDF**](./01_Cappelli_Rogovsky_IA_en_RRHH.pdf) |
+| **02** | **Bejerman / Thomson Reuters**<br>_Las 5 Tendencias Tecnológicas en RRHH_ | [Ver Markdown](./markdown/02_Las_5_Tendencias_Tecnologicas_RRHH.md) | [Ver Typst](./typst/02_Las_5_Tendencias_Tecnologicas_RRHH.typ) | [📄 **Descargar PDF**](./02_Las_5_Tendencias_Tecnologicas_RRHH.pdf) |
+| **03** | **OIT (Estrategia 2022-2025)**<br>_Diversidad, Rendición de Cuentas y Respeto_ | [Ver Markdown](./markdown/03_OIT_Estrategia_RRHH_2022_2025.md) | [Ver Typst](./typst/03_OIT_Estrategia_RRHH_2022_2025.typ) | [📄 **Descargar PDF**](./03_OIT_Estrategia_RRHH_2022_2025.pdf) |
+| **⭐** | **Dossier Maestro Integral Unidad 4**<br>_Compendio Completo con Preguntas de Examen_ | — | [Ver Typst](./Unidad_4_Perspectiva_Actual_e_IA_en_RRHH.typ) | [📕 **Descargar PDF Completo**](./Unidad_4_Perspectiva_Actual_e_IA_en_RRHH.pdf) |
 
 ---
 
-## 🎓 Puntos Críticos de Examen (Extraídos de Clases y Textos)
+## 🎯 Disposiciones Pedagógicas y Pautas de Examen (Clases Desgrabadas)
 
-1. ⚖️ **La Falacia de la Neutralidad Algorítmica**:
-   * *Pregunta de examen típica*: ¿Garantiza el uso de un software de IA la eliminación de la discriminación en la selección de personal?
-   * *Respuesta correcta*: No. Si bien el sistema puede configurarse con filtros ciegos (sin ver edad, género o foto), si es entrenado con bases de datos históricas sesgadas, replicará y amplificará matemáticamente esos patrones discriminatorios. Por ello se requieren **algoritmos de salvaguarda y auditoría ética continua**.
+### 1. Modalidad del Segundo Parcial Oral
+* **Formato:** Evaluación oral virtual administrada en **parejas pedagógicas** conformadas estrictamente por orden alfabético según el padrón del Siu Guaraní.
+* **Dinámica:** Cada pareja responde 5 preguntas conceptuales y de aplicación práctica en un lapso de 10 a 12 minutos.
+* **Alcance Temático de la Unidad 4:**
+  * **Entran al Segundo Parcial:**
+    1. *Peter Cappelli, Prasanna Tambe y Nikolai Rogovsky (2020)*: Disrupción de la IA en talento, matching algorítmico, sesgos y algoritmos de salvaguarda, sistemas salvajes (*shadow IT*), IACH.
+    2. *Bejerman RRHH / Thomson Reuters (2023)*: Las 5 tendencias tecnológicas (Libro de Sueldo Digital, People Analytics, Teletrabajo, Autoservicio y Evaluación 360°/9-Box).
+  * **Exclusivo para Examen Final:**
+    3. *Estrategia de Recursos Humanos de la OIT (2022-2025)*: El texto institucional de la OIT **no entra en el 2° Parcial**; queda reservado obligatoriamente para la mesa de **Examen Final regular o libre**.
 
-2. 🕵️‍♂️ **El Concepto de "Sistemas Salvajes" (*Shadow IT*)**:
-   * Ocurre cuando los empleados o seleccionadores de línea eluden las herramientas informáticas corporativas formales porque las consideran rígidas o lentas, creando canales paralelos (planillas informales, reclutamiento informal por mensajería privada). Destruye la coherencia de la información corporativa.
+---
 
-3. 🔄 **Tutorías Inversas (*Reverse Mentoring*) en la OIT**:
-   * Metodología de desarrollo donde los funcionarios más jóvenes capacitan a los mandos medios y directivos sénior en herramientas digitales, IA y metodologías ágiles, fomentando el aprendizaje intergeneracional bidireccional.
+### 2. Casos Reales y Puntos Críticos Enfatizados por la Docente
 
-4. 📊 **People Analytics: De la Introspección a la Acción Estratégica**:
-   * No se trata únicamente de acumular datos (*Big Data*), sino de transformar la información de ausentismo, horas extras y desempeño en decisiones predictivas que aumenten la rentabilidad y el bienestar organizacional.
+1. 🍔 **El Embudo de Selección Híbrido (Caso McDonald's / Arcos Dorados):**
+   * *Fase 1 (Screening inicial):* Chatbot con procesamiento de lenguaje natural (NLP) que releva disponibilidad horaria, cercanía geográfica y requisitos excluyentes.
+   * *Fase 2 (Simulación laboral digital):* Simulador interactivo donde el postulante atiende clientes virtuales en situaciones de alta demanda para medir velocidad, calma y orientación al servicio.
+   * *Fase 3 (Entrevista presencial):* Superado el filtro tecnológico, la decisión final de contratación la toma indefectiblemente el gerente de sucursal humano.
+
+2. 🏥 **Diferencia Conceptual: Realidad Aumentada/Virtual vs. Gamificación:**
+   * La docente utilizó el caso del **Centro de Simulación Quirúrgica de la Universidad Nacional del Comahue (UNCo)**:
+     * *Realidad Aumentada / Virtual:* Entornos inmersivos 3D con retroalimentación sensorial (háptica y visual) para ensayar procedimientos críticos de alto riesgo sin peligro para personas reales.
+     * *Gamificación:* Dinámicas de juego (puntos, niveles, insignias, rankings) aplicadas a cursos y capacitaciones teóricas para aumentar el compromiso (*engagement*) cognitivo.
+
+3. 🔒 **Principio de Confidencialidad Salarial y Token de Validación:**
+   * La digitalización de nóminas y el recibo de sueldo con validación de identidad (Token digital o RENAPER) eliminó las planillas en papel que circulaban entre escritorios (*"el chisme salarial"*).
+   * El salario es un **dato personal sensible protegido por ley**: Recursos Humanos tiene prohibido divulgar haberes a terceros y únicamente puede expedir información salarial ante orden expresa de un juez mediante **oficio judicial**.
+
+4. ⚙️ **Sistemas Salvajes (*Shadow IT*):**
+   * Canales paralelos e informales (hojas de cálculo privadas, reclutamiento vía WhatsApp no oficial) generados por mandos medios cuando el software oficial corporativo resulta rígido o lento. Destruyen la gobernanza de datos y violan la privacidad legal.
+
+5. ⚖️ **Falacia de la Neutralidad Algorítmica y Algoritmos de Salvaguarda:**
+   * La IA no es neutra si fue entrenada con datos históricos sesgados. No alcanzan los filtros ciegos (porque las variables sustitutas o *proxies* reintroducen el sesgo); se deben programar **algoritmos de salvaguarda** y auditorías continuas de explicabilidad.

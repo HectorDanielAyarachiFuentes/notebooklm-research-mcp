@@ -14,10 +14,10 @@
         columns: (1fr, auto),
         align: (left, right),
         text(size: 8.5pt, fill: rgb("#475569"), font: "Liberation Sans", weight: "medium")[
-          Gestión de Recursos Humanos III · *Unidad 4: Perspectiva Actual e IA en RRHH*
+          Gestión de Recursos Humanos 3 · *Unidad 4: Perspectiva Actual e IA en RRHH*
         ],
         text(size: 8.5pt, fill: rgb("#64748b"), font: "Liberation Sans")[
-          Dossier Académico 2025
+          Gestión de Recursos Humanos 3
         ]
       )
       #v(-2pt)
@@ -156,8 +156,8 @@
   #line(length: 50%, stroke: 1pt + rgb("#cbd5e1"))
   #v(0.3cm)
   #text(size: 9.5pt, fill: rgb("#64748b"))[
-    *Compilación Académica y Guía de Examen Final* \
-    Basado en los textos oficiales de estudio y las transcripciones de clase (2025)
+    *Compilación Académica y Guía de Examen* \
+    Basado en los textos oficiales de estudio y las transcripciones de clase
   ]
 ]
 
@@ -450,6 +450,37 @@ El informe técnico de Bejerman RRHH analiza cómo las tecnologías cloud y la c
   2. *Eficiencia Operativa:* Reducir tiempos muertos y costos de archivo mediante la erradicación del papel y la autogestión de trámites en el portal del empleado.
   3. *Cumplimiento Normativo y Mitigación de Riesgos:* Garantizar la correcta liquidación salarial según convenios colectivos y asegurar la integración fluida con los entes fiscales (Libro de Sueldo Digital de AFIP/ARCA) para evitar litigios y multas.
 ], icon: "❓")
+
+== 4.3. Disposiciones Pedagógicas de Cátedra, Alcance de Examen y Casos Prácticos
+
+#tip-parcial(title: "Modalidad Evaluativa Oficial: Segundo Parcial Oral", [
+  Según las directivas pedagógicas explicitadas por el equipo docente en clases desgrabadas:
+  - *Formato de Examen:* Evaluación oral virtual administrada en *parejas pedagógicas* conformadas estrictamente por orden alfabético según el padrón del SIU Guaraní.
+  - *Dinámica:* Cada pareja responde 5 preguntas conceptuales y de articulación práctica en un lapso de 10 a 12 minutos.
+  - *Alcance Temático de la Unidad 4 para el 2° Parcial:*
+    - *Entran al Segundo Parcial:*
+      1. *Cappelli, Tambe y Rogovsky (2020)*: Disrupción de la Inteligencia Artificial en la gestión del talento, matching algorítmico, sesgos y algoritmos de salvaguarda, y sistemas salvajes (*shadow IT*).
+      2. *Bejerman RRHH / Thomson Reuters (2023)*: Las 5 tendencias tecnológicas (Libro de Sueldo Digital, People Analytics, Teletrabajo híbrido, Portal del Empleado y Evaluación 360°/9-Box).
+    - *Exclusividad para Examen Final:*
+      3. *Estrategia de RRHH de la OIT (2022-2025)*: El documento institucional de la OIT *no ingresa en el 2° Parcial oral*; su estudio completo queda reservado de manera obligatoria para la instancia del *Examen Final regular o libre*.
+])
+
+#v(8pt)
+#callout(title: "Casos Reales y Reglas Críticas Enfatizadas en Clase", [
+  *1. Embudo Tecnológico en Selección: Caso McDonald's:* \
+  La docente utilizó a la cadena Arcos Dorados (McDonald's) como caso insignia de selección híbrida:
+  - *Fase 1 (Screening inicial):* Chatbot inteligente con procesamiento de lenguaje natural (relevamiento de disponibilidad horaria, distancia geográfica y requisitos excluyentes).
+  - *Fase 2 (Simulación laboral digital):* Simulador interactivo donde el postulante atiende un pedido virtual ante situaciones de estrés (manejo de quejas, velocidad y foco en el cliente).
+  - *Fase 3 (Entrevista presencial final):* Superadas las etapas automatizadas, la decisión final de incorporación queda indefectiblemente en manos del gerente de sucursal humano.
+
+  *2. Diferenciación Pedagógica: Realidad Aumentada vs. Gamificación:* \
+  Ante reiteradas confusiones en parciales anteriores, la cátedra citó el *Centro de Simulación Quirúrgica de la Universidad Nacional del Comahue (UNCo)*:
+  - *Realidad Aumentada / Virtual:* Plataformas inmersivas que replican un entorno físico tridimensional con retroalimentación sensorial (háptica/visual) para ensayar procedimientos críticos de alto riesgo sin peligro para personas reales.
+  - *Gamificación:* Incorporación de dinámicas, puntajes, niveles y recompensas de juegos en plataformas formativas para elevar el compromiso (*engagement*) cognitivo.
+
+  *3. Principio de Confidencialidad Salarial y Token Digital:* \
+  La implementación del recibo de sueldo digital homologado (con validación de identidad vía Token o RENAPER) erradicó definitivamente la práctica viciada de la planilla salarial en papel que circulaba entre escritorios (*"el chisme salarial"*). La cátedra recalca que el sueldo es un *dato personal sensible protegido por ley*: el área de Recursos Humanos tiene prohibido divulgar haberes y solo puede expedir información de nómina ante requerimiento fundado de un juez mediante *oficio judicial*.
+], icon: "📌")
 
 #v(1cm)
 #align(center)[
