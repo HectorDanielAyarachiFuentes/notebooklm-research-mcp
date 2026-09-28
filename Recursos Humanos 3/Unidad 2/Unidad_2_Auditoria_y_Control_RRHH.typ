@@ -1,6 +1,6 @@
 #set document(
   title: "Unidad 2: Auditoría y Control de Recursos Humanos",
-  author: "Cátedra de Gestión de Recursos Humanos III",
+  author: "Gestión de Recursos Humanos 3",
 )
 
 // Estilos de página y tipografía
@@ -31,7 +31,7 @@
       columns: (1fr, auto),
       align: (left, right),
       text(size: 8pt, fill: rgb("#a0aec0"))[
-        Facultad de Ciencias Económicas · Cátedra GRH III
+        Gestión de Recursos Humanos 3
       ],
       text(size: 8.5pt, fill: rgb("#4a5568"), weight: "bold")[
         #counter(page).display("1 / 1", both: true)
@@ -125,10 +125,10 @@
 #align(center)[
   #v(2cm)
   #text(size: 13pt, weight: "bold", tracking: 2pt, fill: rgb("#718096"))[
-    UNIVERSIDAD NACIONAL · FACULTAD DE CIENCIAS ECONÓMICAS
+    GESTIÓN DE RECURSOS HUMANOS 3
   ] \
   #text(size: 11pt, weight: "medium", fill: rgb("#a0aec0"))[
-    Cátedra de Gestión de Recursos Humanos III · Ciclo Lectivo 2025
+    Gestión de Recursos Humanos 3
   ]
   
   #v(2.5cm)

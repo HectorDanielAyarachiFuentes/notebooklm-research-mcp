@@ -73,3 +73,27 @@ flowchart TD
 * **Gestión por Competencias y Planes de Carrera**: Demuestran que la planificación de personal no busca simplemente "llenar casilleros", sino gestionar de forma integral las **competencias individuales y colectivas**, asegurando que los colaboradores puedan proyectar su carrera dentro de la organización.
 * **Transformación del Rol de RRHH**: El área de talento humano deja de ser un departamento administrativo reactivo ("gestoría de sueldos y legajos") para erigirse en un **socio estratégico del negocio**, capaz de justificar su impacto directo en la productividad y la creación de valor.
 * **Aplicabilidad Mixta**: Su modelo resulta igualmente operativo para empresas del sector privado como para organismos de la administración pública.
+
+---
+
+## 🎓 6. Énfasis de Cátedra y Clases Desgrabadas (Tips de Examen Parcial)
+
+El análisis pedagógico de las clases de la cátedra resalta los siguientes ejes críticos para la evaluación:
+
+* **La PERH como "Horizonte Institucional"**: La cátedra subraya que la planificación estratégica de personal no debe concebirse jamás como un evento puntual o aislado, sino como una práctica permanente y un compromiso de aprendizaje continuo en toda la organización.
+* **Capacidad de Anticipación Integral de Movimientos**:
+  * La PERH debe gestionar preventivamente los dos grandes flujos de personal:
+    * *Flujos Internos*: Planes de carrera, promociones verticales, transferencias horizontales y programas de reconversión laboral.
+    * *Flujos Externos*: Estrategias de captación de talento en el mercado, desvinculaciones planificadas y planes de retiro/jubilación ordenados.
+* **Los Tres Pilares de Importancia (Pregunta Clásica de Parcial)**:
+  1. **Retener el Talento en Cantidad y Calidad**: La docente remarca que la retención no se logra únicamente con aumentos salariales coyunturales, sino estructurando planes de desarrollo profesional, buen clima laboral y desafíos motivantes.
+  2. **Anticipar el Desfase Temporal (*Lead Time*)**: El docente remarca en clase que contratar a un profesional calificado lleva meses (búsqueda, entrevistas, inducción, curva de aprendizaje). Sin planificación, el puesto queda vacante y paraliza la operación.
+  3. **Controlar y Disminuir la Rotación Innecesaria**: La rotación caótica de personal destruye el capital intelectual y encarece los costos operativos. Una organización con alta rotación denota falta de previsión estratégica.
+* **Estructura de las 6 Fases (Pregunta de Desarrollo)**:
+  1. *Fase de Análisis*: Diagnóstico integral, inventario de competencias y **análisis/descripción de puestos (la piedra angular)**.
+  2. *Fase de Previsión*: Estimación de las demandas cualitativas y cuantitativas futuras.
+  3. *Fase de Programación*: Diseño de planes específicos de reclutamiento, formación y retención.
+  4. *Fase de Realización*: Puesta en práctica de las actividades programadas.
+  5. *Fase de Control*: Detección temprana de desvíos frente a las metas pautadas.
+  6. *Fase de Presentación de Resultados*: Rendición de cuentas e informes ejecutivos de gestión a la dirección.
+

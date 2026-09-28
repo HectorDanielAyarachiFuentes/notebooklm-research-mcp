@@ -99,3 +99,25 @@ Racionalidad simple     │      Formal o Asamblearia    Aprendizaje Colectivo
 * **Dimensión Comunicacional y Subjetiva**: Demuestra que los planes de Recursos Humanos no pueden diseñarse como meros diagramas de flujo tecnocráticos; son **dispositivos de comunicación social** que deben dotar de sentido y legitimidad al trabajo cotidiano.
 * **Integración de los Saberes de los Colaboradores**: Las políticas de personal ganan eficacia real cuando incorporan el conocimiento práctico de los trabajadores y respetan sus aspiraciones individuales y colectivas.
 * **Superación del "Plan Libro"**: Enseña a las gerencias de RRHH a abandonar las directivas inflexibles y reemplazarlas por **marcos prospectivos de diálogo continuo**, alineando los proyectos personales de carrera con el rumbo institucional.
+
+---
+
+## 🎓 6. Énfasis de Cátedra y Clases Desgrabadas (Tips de Examen Parcial)
+
+El equipo docente de Recursos Humanos III utiliza este texto como base fundamental para evaluar la capacidad de diferenciar paradigmas de gestión:
+
+* **Comparación de los Tres Modelos (Pregunta Obligatoria de Examen)**:
+  1. **Enfoque Normativo (Clásico / Tradicional)**:
+     * *Quién planifica*: **Uno solo** (planificador tecnocrático unipersonal externo a la realidad).
+     * *Cómo planifica*: A través del **"plan libro"** encuadernado; rígido, verticalista y ceñido taxativamente a normativas y leyes preexistentes. Concibe el futuro como una certeza predecible.
+  2. **Enfoque Estratégico Situacional (PES / Carlos Matus)**:
+     * *Quién planifica*: **Múltiples actores sociales** con distintas cuotas de poder, intereses divergentes y voluntad de transformación.
+     * *Cómo planifica*: Parte de la apreciación de la situación actual (el presente real y conflictivo) para diseñar proyectos viables hacia la situación objetivo deseada, negociando con aliados y adversarios.
+  3. **Enfoque Prospectivo Estratégico**:
+     * *Quién planifica*: Procesos participativos y colectivos.
+     * *Cómo planifica*: Se instala prioritariamente en el **futuro deseado** (escenarios utópicos viables) y, desde esa imagen porvenir, realiza un viaje retrospectivo hacia el presente para trazar las acciones requeridas.
+* **Distinción Teórica Clave: Proferencia vs. Prospectiva (Tip de Examen)**:
+  * **Proferencia**: Se ancla en el **pasado y presente**; proyecta e interpola tendencias preexistentes hacia adelante (*¿qué sucederá si las cosas continúan funcionando como hasta hoy?*). Agrupa tanto al enfoque normativo como al situacional.
+  * **Prospectiva**: Se ancla en la libertad de diseño del **futuro deseado**; inventa el porvenir desde el presente sin quedar encadenado a la inercia o fatalidad del pasado.
+* **Criterio de Evaluación del Docente**: La cátedra insiste en que no debe responderse que un enfoque es "superior o mejor" que otro; en las organizaciones reales conviven los tres estilos y su pertinencia depende de la estabilidad del entorno, la urgencia de las decisiones y la cultura institucional.
+

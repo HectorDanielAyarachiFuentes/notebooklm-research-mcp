@@ -83,3 +83,25 @@ flowchart LR
 * **El área de RRHH como actor situado**: Quien lidera Recursos Humanos no es un burócrata neutral; es un actor con intereses, visiones y límites de gobernabilidad dentro del mapa de poder corporativo o estatal.
 * **Políticas de personal con viabilidad política**: Las políticas salariales, las reestructuraciones y los cambios de carrera no se implementan por mero decreto técnico; requieren **construir consensos y negociar viabilidad** con sindicatos, directivos de línea y delegados gremiales.
 * **El personal como variable de Capacidad de Gobierno**: Para que cualquier proyecto estratégico institucional se concrete, el área de Recursos Humanos debe proveer y potenciar las competencias, motivación y estructura del personal que conforma la **Capacidad de Gobierno (CG)** de la organización.
+
+---
+
+## 🎓 6. Énfasis de Cátedra y Clases Desgrabadas (Tips de Examen Parcial)
+
+El análisis de las desgrabadas de clases revela los conceptos teóricos y distinciones que el docente evalúa rigurosamente en las instancias de examen:
+
+* **Etimología Conceptual (Pregunta Clásica de Parcial)**:
+  * **Plan**: Deriva del latín referente al *plano* o trazado fundacional de una edificación. Es el diseño técnico anticipado antes de iniciar la obra física. En gestión: *toma anticipada de decisiones para dominar la incertidumbre y no quedar a merced del azar*.
+  * **Estrategia**: Proviene de la esfera militar clásica (el *estratega* o general en jefe del ejército). Hace alusión a la pericia, intuición, lectura del terreno y destreza de conducción para operar en un escenario donde otros actores también juegan con objetivos propios o contrapuestos.
+* **Los Cinco Atributos del Plan (Fórmula Exigida)**:
+  1. *Reflexión previa*: Pensar antes de actuar.
+  2. *Reducción del azar*: Acotar las contingencias desestabilizadoras.
+  3. *Anticipación de decisiones*: Resolver problemas antes de que estallen en la coyuntura.
+  4. *Selección de opciones*: Elegir la trayectoria más conveniente entre alternativas evaluadas.
+  5. *Previsión temporal y flexibilidad*: Establecer plazos pero con capacidad de maniobra y ajuste continuo.
+* **Atributos de la Estrategia**:
+  * Es **consciente**: Nace de un diagnóstico analítico, no de la improvisación pasional.
+  * Es **adaptativa**: Capaz de pivotar frente a cambios abruptos en el entorno.
+  * Es **condicional**: Sus resultados dependen de cómo reaccionen los aliados y oponentes.
+* **Ruptura con el "Plan Libro"**: La cátedra insiste en que el mayor error conceptual en el examen es concebir al plan como un recetario estático y encuadernado. El verdadero planeamiento estratégico es situacional, dinámico y dialéctico; exige recalcular permanentemente en el momento táctico-operacional.
+

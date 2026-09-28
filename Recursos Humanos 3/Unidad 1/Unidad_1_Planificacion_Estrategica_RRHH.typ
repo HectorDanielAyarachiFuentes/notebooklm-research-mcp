@@ -1,6 +1,6 @@
 #set document(
   title: "Unidad 1: Planificación Estratégica de Recursos Humanos",
-  author: "Cátedra de Gestión de Recursos Humanos III",
+  author: "Gestión de Recursos Humanos 3",
 )
 
 // Estilos de página y tipografía
@@ -33,7 +33,7 @@
         columns: (1fr, auto),
         align: (left, right),
         text(size: 8pt, fill: rgb("#a0aec0"))[
-          Facultad de Ciencias Económicas · Cátedra GRH III
+          Gestión de Recursos Humanos 3
         ],
         text(size: 8.5pt, fill: rgb("#4a5568"), weight: "bold")[
           #counter(page).display("1 / 1", both: true)
@@ -128,10 +128,10 @@
 #align(center)[
   #v(2cm)
   #text(size: 13pt, weight: "bold", tracking: 2pt, fill: rgb("#718096"))[
-    UNIVERSIDAD NACIONAL · FACULTAD DE CIENCIAS ECONÓMICAS
+    GESTIÓN DE RECURSOS HUMANOS 3
   ] \
   #text(size: 11pt, weight: "medium", fill: rgb("#a0aec0"))[
-    Cátedra de Gestión de Recursos Humanos III · Ciclo Lectivo 2025
+    Gestión de Recursos Humanos 3
   ]
   
   #v(2.5cm)
@@ -328,7 +328,12 @@ Inspirado en Henry Mintzberg, Palacios Acero recalca que la estrategia real de u
 == 3.5. Aporte a la Planificación de Recursos Humanos
 En el marco de la *Empresa Social*, el talento humano se consagra como la única ventaja competitiva genuinamente sostenible. Mientras la tecnología y las maquinarias son accesibles para cualquier competidor con capital, el conocimiento tácito, la cohesión del equipo y el compromiso de los colaboradores son activos intangibles inimitables.
 
+#tip-parcial(title: "Aviso Crítico de Cátedra sobre Palacios Acero para el Parcial")[
+  En las desgrabaciones oficiales de clase, el equipo docente aclaró taxativamente a los alumnos que el texto de Luis Carlos Palacios Acero *NO se alcanzó a desarrollar en el cronograma presencial y NO ingresa en los temas a evaluar en el examen parcial* (se reserva su evaluación exclusivamente para las mesas de examen final regular o libre).
+]
+
 #pagebreak()
+
 
 // ==========================================
 // CAPÍTULO 4: IGLESIAS, PAGOLA Y URANGA
@@ -496,13 +501,32 @@ Integran la *gestión por competencias* con los *planes de carrera*. Demuestran 
 #tip-parcial(title: "Los Mandamientos Docentes para Aprobar los Parciales")[
   A partir del análisis de las desgrabaciones oficiales de las clases de la cátedra:
 
-  1. *Uso Estricto del Vocabulario Técnico:* Las docentes penalizan severamente las respuestas redactadas con lenguaje coloquial o de "sentido común". Se debe utilizar la terminología precisa de los autores (diferenciar claramente eficacia de eficiencia, y control de auditoría).
-  2. *Reglas de Redacción de Objetivos Estratégicos:*
-     - *Obligatorio:* Iniciar con un *verbo en infinitivo de acción concreta y medible* (ej. _"Rediseñar"_, _"Capacitar"_, _"Implementar"_, _"Disminuir"_).
-     - *Prohibido:* Usar verbos ambiguos que no expresan resultados auditables (como _"fomentar"_, _"procurar"_ o _"propender"_).
-  3. *Plan vs. Estrategia:* Recordar que el plan es la toma anticipada de decisiones estructurada formalmente; la estrategia es la pericia, método y estilo reflexivo de acción consciente, adaptativo y condicional frente a otros actores.
-  4. *No Dejar Consignas en Blanco:* La mayor parte de los aplazos se originan en preguntas no contestadas por falta de lectura de los textos bibliográficos.
+  1. *Uso Estricto del Vocabulario Técnico:* Las docentes penalizan severamente las respuestas redactadas con lenguaje coloquial o de "sentido común". Se debe utilizar la terminología precisa de los autores (diferenciar claramente eficacia de eficiencia, economía de recorte presupuestario, y proferencia de prospectiva).
+  2. *Marianela Armijo (Regla de Oro en Objetivos):*
+     - *Obligatorio:* Iniciar con un *verbo en infinitivo de acción concreta y medible* (ej. _"Garantizar"_, _"Implementar"_, _"Capacitar"_).
+     - *Prohibido:* Verbos ambiguos como _"fomentar"_, _"promover"_, _"procurar"_ o _"contribuir"_.
+     - *Los 4 Indicadores:* Eficacia (metas logradas), Eficiencia (costo/insumo por producto), Economía (gestión financiera) y Calidad (satisfacción del usuario).
+  3. *Alfredo Ossorio (Etimología y Atributos):*
+     - *Plan:* Del latín _plano de edificio_ (diseño previo para reducir incertidumbre).
+     - *Estrategia:* Del ámbito militar (_estratega_, general del ejército que opera donde otros juegan).
+     - *Los 5 Atributos del Plan:* Reflexión previa, reducción del azar, anticipación de decisiones, selección de opciones y previsión temporal.
+  4. *Luis Carlos Palacios Acero:*
+     - *¡No entra en el examen parcial!* El texto no se alcanzó a dictar en clase y queda reservado únicamente para la mesa de examen final.
+  5. *Iglesias, Pagola y Uranga (Modelos y Proferencia vs. Prospectiva):*
+     - *Normativo:* Unipersonal, "plan libro", rígido, mira al pasado.
+     - *Situacional (Matus):* Múltiples actores, parte del presente real y construye viabilidad.
+     - *Prospectivo:* Imagina el futuro deseado y viaja retrospectivamente hacia el presente.
+     - *Proferencia* (mira desde el pasado) vs. *Prospectiva* (construye desde el porvenir deseado).
+  6. *Simón Dolan (La Faz Cuantitativa):*
+     - *Doble Dimensión:* Cuantitativa (volumen numérico) y Cualitativa (competencias y perfiles).
+     - *La Paradoja de Dolan:* El 100% dice que la PERH es vital, pero solo el 16% la aplica formalmente.
+     - *Fórmula de Necesidades Netas:* $"Demanda Proyectada" - "Oferta Interna Disponible"$.
+  7. *Mendoza, López y Salas (Horizonte y Fases):*
+     - La PERH como _"horizonte institucional continuo"_ (no evento aislado) y _"función sombrilla"_.
+     - Los 3 pilares: retener talento en cantidad/calidad, anticipar el _lead time_ y abatir la rotación caótica.
+     - El *Análisis y Descripción de Puestos* como la piedra angular indispensable.
 ]
+
 
 #v(20pt)
 #align(center)[

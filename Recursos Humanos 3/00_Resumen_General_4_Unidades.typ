@@ -1,6 +1,6 @@
 #set document(
   title: "Gestión de Recursos Humanos III — Programa General",
-  author: "Cátedra GRH III"
+  author: "Gestión de Recursos Humanos 3"
 )
 
 #set page(
@@ -30,7 +30,7 @@
       columns: (1fr, auto),
       align: (left, right),
       text(size: 8pt, fill: rgb("#a0aec0"))[
-        Facultad de Ciencias Económicas · Cátedra GRH III
+        Gestión de Recursos Humanos 3
       ],
       text(size: 8.5pt, fill: rgb("#4a5568"), weight: "bold")[
         #counter(page).display("1 / 1", both: true)

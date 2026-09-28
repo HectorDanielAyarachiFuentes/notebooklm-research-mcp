@@ -77,3 +77,25 @@ flowchart TD
 * **Del gasto al valor público**: Los recursos humanos en el sector público no se gestionan meramente como un costo salarial, sino como la **capacidad instalada esencial** para proveer los bienes y servicios estratégicos del Estado.
 * **Justificación de dotaciones**: Cualquier ampliación, reestructuración o plan de capacitación de personal debe guardar estricta correspondencia con los **objetivos estratégicos y metas de impacto** fijadas en el plan institucional.
 * **Criterios de evaluación**: Introduce las cuatro dimensiones clave (**Eficacia, Eficiencia, Economía y Calidad**) para auditar la contribución del personal al logro de las políticas públicas.
+
+---
+
+## 🎓 6. Énfasis de Cátedra y Clases Desgrabadas (Tips de Examen Parcial)
+
+A partir del análisis de las clases desgrabadas de la materia, el equipo docente subraya los siguientes puntos ineludibles para las evaluaciones:
+
+* **Misión como Brújula Institucional**: La docente enfatiza que la misión debe responder obligatoriamente a cuatro preguntas operativas: *¿Qué hace la organización?*, *¿Cuáles son sus productos/servicios estratégicos?*, *¿A qué usuarios o beneficiarios se dirige?* y *¿Cuáles son sus valores y localización geográfica distintiva?*. Si falta alguna de estas dimensiones en la formulación, la misión está técnicamente incompleta.
+* **Visión como Faro Guía (+10 años)**: No es un objetivo operativo de corto plazo; es la proyección a largo plazo (horizonte de 10 años o más) que representa el horizonte valorativo hacia donde la institución orienta todas sus energías.
+* **Regla de Oro en Objetivos Estratégicos (¡Alerta de Corrección en Parcial!)**:
+  * Deben redactarse **siempre con un verbo de acción en infinitivo** (sin conjugar).
+  * **Advertencia explícita del docente**: Queda terminantemente **prohibido** utilizar verbos ambiguos o blandos como *"fomentar"*, *"promover"*, *"procurar"* o *"contribuir"*, ya que representan meras expresiones de deseo o intenciones híbridas que no permiten construir un indicador de resultado medible.
+  * *Ejemplo corregido en clase*: En vez de una fórmula ambigua como *"Promover la salud pública a nivel nacional"*, la cátedra exige una meta de acción concreta: *"Garantizar la cobertura de atención primaria en las primeras infancias en las regiones sanitarias prioritarias"*.
+* **Análisis FODA Riguroso**: La docente advierte que el FODA suele aplicarse de forma *"trillada"* o superficial. Para el parcial exige clasificar con precisión quirúrgica:
+  * **Factores Internos (Bajo control de la organización)**: Fortalezas y Debilidades.
+  * **Factores Externos (Variables del entorno que la entidad no controla)**: Oportunidades y Amenazas.
+* **Clasificación de los Cuatro Indicadores de Desempeño (Pregunta Fija de Examen)**:
+  1. **Eficacia**: Grado de cumplimiento de los objetivos y metas finales. *(Ejemplo de clase: Porcentaje de estudiantes o participantes que culminan y aprueban un programa de capacitación sobre el total de inscriptos)*.
+  2. **Eficiencia**: Relación entre los recursos (costos, horas, presupuesto) invertidos y los productos o servicios obtenidos. *(Ejemplo de clase: Costo medio por trámite resuelto o productividad de horas-hombre por expediente)*.
+  3. **Economía**: Capacidad de la organización para movilizar, administrar y ejecutar oportunamente los recursos financieros. *(Ejemplo de clase: Porcentaje de ejecución presupuestaria respecto del crédito asignado; ratio de cobranzas sobre facturación)*.
+  4. **Calidad**: Capacidad para responder con celeridad, exactitud y oportunidad a las expectativas de los usuarios. *(Ejemplo de clase: Tiempo promedio de espera en ventanilla; índice de satisfacción del ciudadano medido por encuestas de percepción)*.
+

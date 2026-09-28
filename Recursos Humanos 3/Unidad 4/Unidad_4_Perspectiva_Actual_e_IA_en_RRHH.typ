@@ -1,6 +1,6 @@
 #set document(
   title: "Unidad 4: Perspectiva Actual de la Gestión de RRHH e Inteligencia Artificial",
-  author: "Cátedra de Gestión de Recursos Humanos III",
+  author: "Gestión de Recursos Humanos 3",
 )
 
 // Estilos de página y tipografía
@@ -31,7 +31,7 @@
       columns: (1fr, auto),
       align: (left, right),
       text(size: 8pt, fill: rgb("#94a3b8"))[
-        Facultad de Ciencias Económicas · Cátedra GRH III
+        Gestión de Recursos Humanos 3
       ],
       text(size: 8.5pt, fill: rgb("#334155"), weight: "bold")[
         #counter(page).display("1 / 1", both: true)
@@ -127,10 +127,10 @@
 #align(center)[
   #v(2cm)
   #text(size: 13pt, weight: "bold", tracking: 2pt, fill: rgb("#64748b"))[
-    UNIVERSIDAD NACIONAL · FACULTAD DE CIENCIAS ECONÓMICAS
+    GESTIÓN DE RECURSOS HUMANOS 3
   ] \
   #text(size: 11pt, weight: "medium", fill: rgb("#94a3b8"))[
-    Cátedra de Gestión de Recursos Humanos III · Ciclo Lectivo 2025
+    Gestión de Recursos Humanos 3
   ]
   
   #v(2.3cm)

@@ -90,3 +90,30 @@ flowchart TD
 * **El personal como inversión capitalizable**: Dolan combate la mirada tradicional del personal como "gasto administrativo variable", demostrando que las erogaciones en captación y desarrollo son **inversiones que generan retorno financiero medible**.
 * **Rigor métrico y analítico**: Dota al área de RRHH de un arsenal cuantitativo formal (curvas de aprendizaje, Delphi, Markov, análisis de regresión) para fundamentar sus demandas ante el directorio con datos duros.
 * **El SIRH como columna vertebral**: Postula que no puede haber planificación estratégica sin una base de datos de personal automatizada, fidedigna e integrada con los demás sistemas de la empresa.
+
+---
+
+## 🎓 6. Énfasis de Cátedra y Clases Desgrabadas (Tips de Examen Parcial)
+
+A través de las grabaciones de clases, el docente marca a Dolan como el autor neurálgico de la faz cuantitativa de la PERH:
+
+* **Concepto de Doble Dimensión (Cualitativa vs. Cuantitativa)**:
+  * La cátedra exige no limitar la planificación de personal a "contar cabezas".
+  * *Dimensión Cuantitativa*: Número exacto de colaboradores necesarios por sector.
+  * *Dimensión Cualitativa*: Competencias, calificaciones técnicas, habilidades blandas y perfiles requeridos para cada puesto en el momento oportuno.
+* **La Paradoja de Dolan o "Doble Mensaje" (Pregunta Típica de Parcial)**:
+  * El docente suele preguntar: *¿Cuál es la contradicción empírica que describe Dolan en relación a la planificación de RRHH?*
+  * *Respuesta esperada*: El **100% de los gerentes y directores de RRHH** afirma en las encuestas que la planificación estratégica de personal es prioritaria; no obstante, solo un **16% de las empresas** la lleva a la práctica de manera sistemática.
+  * *Causas señaladas en clase*: La escasez de tiempo frente a las urgencias operativas, la complejidad técnica de los métodos estadísticos y la ausencia de un Sistema de Información de Recursos Humanos (SIRH/HRIS) estructurado.
+* **El Cálculo de Necesidades Netas (Ejercicio de Razonamiento)**:
+  * **Demanda de RRHH**: Proyección del personal que la organización necesitará para cumplir sus metas estratégicas.
+  * **Oferta de RRHH**: Personal efectivamente disponible (fuerza de trabajo interna actual ajustada por jubilaciones, renuncias y ascensos, más la oferta del mercado externo).
+  * **Fórmula Clave**:
+    $$\text{Necesidades Netas} = \text{Demanda Proyectada} - \text{Oferta Interna Disponible}$$
+  * Si la demanda supera a la oferta: planes de búsqueda, reclutamiento y horas extras. Si la oferta supera a la demanda: congelamiento de vacantes, transferencias o retiros voluntarios.
+* **Las Cuatro Fases Secuenciales de Dolan**:
+  1. *Fase 1*: Recopilación, análisis, previsión de oferta/demanda y presupuesto salarial.
+  2. *Fase 2*: Establecimiento de objetivos y formulación de políticas de personal.
+  3. *Fase 3*: Programación táctica (ajuste: selección, capacitación, promociones).
+  4. *Fase 4*: Control, auditoría y evaluación de impacto de las políticas aplicadas.
+

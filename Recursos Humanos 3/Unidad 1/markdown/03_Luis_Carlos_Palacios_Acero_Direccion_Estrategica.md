@@ -79,3 +79,17 @@ Palacios Acero presenta un nutrido abanico de metodologías aplicables a la gest
 * **El talento como activo de diferenciación**: En la *Empresa Social*, las máquinas y la tecnología se pueden comprar o copiar, pero las **habilidades distintivas, el conocimiento tácito y el involucramiento del personal** son inimitables y constituyen la verdadera fuente de valor agregado.
 * **Perspectiva de Aprendizaje en el BSC**: Sitúa al subsistema de personal como la base que sustenta la mejora de los procesos internos, la satisfacción del cliente y el rendimiento financiero.
 * **Flexibilidad y respuesta emergente**: Brinda a los directores de RRHH la agilidad para reconfigurar perfiles y dotaciones frente a crisis o cambios repentinos en el mercado.
+
+---
+
+## 🎓 7. Énfasis de Cátedra y Clases Desgrabadas (Tips de Examen Parcial)
+
+A partir del cotejo directo con las desgrabadas de las clases teóricas y prácticas, se desprende una advertencia central para los estudiantes:
+
+* **¡ALERTA CRÍTICA PARA EL PARCIAL!**: El equipo docente aclaró de forma explícita en las clases que este texto de Luis Carlos Palacios Acero **NO fue desarrollado por falta de tiempo en el cronograma y NO ingresa en los temas a evaluar en el examen parcial**.
+* **Alcance para el Examen Final**: Su lectura se reserva para quienes rindan la materia en condición regular o libre en las mesas de examen final.
+* **Ejes Conceptuales a Priorizar en caso de Examen Final**:
+  1. *Evolución de la Empresa*: Reconocer las diferencias sustantivas entre la *Empresa Máquina* (hombre como pieza mecánica intercambiable), la *Empresa Sistémica* (interdependencia funcional de subsistemas) y la *Empresa Social* (salud integral, compromiso, bienestar y desarrollo del talento humano).
+  2. *Balanced Scorecard (BSC) y RRHH*: Ubicar al subsistema de personas en la base de la pirámide causal: la perspectiva de *Aprendizaje y Crecimiento* es el motor que optimiza los procesos internos y genera valor para los clientes y resultados financieros.
+  3. *Estrategias Deliberadas vs. Emergentes*: Comprender que la estrategia real se construye en el día a día al confrontar el plan deliberado con los emergentes del contexto real.
+
