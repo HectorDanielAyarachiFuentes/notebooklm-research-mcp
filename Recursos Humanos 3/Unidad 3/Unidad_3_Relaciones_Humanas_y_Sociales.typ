@@ -14,10 +14,10 @@
         columns: (1fr, auto),
         align: (left, right),
         text(size: 8.5pt, fill: rgb("#4a5568"), font: "Liberation Sans", weight: "medium")[
-          Gestión de Recursos Humanos III · *Unidad 3: Relaciones Humanas y Sociales*
+          Gestión de Recursos Humanos 3 · *Unidad 3: Relaciones Humanas y Sociales*
         ],
         text(size: 8.5pt, fill: rgb("#718096"), font: "Liberation Sans")[
-          Dossier Académico 2025
+          Gestión de Recursos Humanos 3
         ]
       )
       #v(-2pt)
@@ -154,7 +154,7 @@
   #v(0.3cm)
   #text(size: 9.5pt, fill: rgb("#718096"))[
     *Compilación Académica y Guía de Examen* \
-    Basado en los textos de estudio y las transcripciones oficiales de clases (2025)
+    Basado en los textos de estudio y las transcripciones oficiales de clases
   ]
 ]
 
@@ -402,19 +402,23 @@ El modelo ideal persigue la **doble lealtad**: lograr que el trabajador sienta c
   [Jorge Aquino y cols.], [Relaciones Gremiales / Negociación], [Trato entre representantes y dinámicas de poder.], [3 Funciones gremiales, Rol Dueño vs. Asesor y Regla de McGregor.]
 )
 
-== 6.2. Mandamientos Docentes para la Unidad 3
+== 6.2. Mandamientos Docentes para el Segundo Parcial Oral (Clases Desgrabadas)
 
-#tip-parcial(title: "Puntos Neurálgicos de Corrección Docente")[
-  1. *Prestaciones como Factores Higiénicos:* Enmarcar las prestaciones sociales dentro de la teoría de Herzberg: previenen la insatisfacción y rotación, pero no motivan por sí solas.
-  2. *Diferencia entre Condición Insegura y Acto Inseguro:* La condición es la falla material o ambiental del entorno; el acto es la conducta humana imprudente del trabajador.
-  3. *Incompatibilidad Simultánea de McGregor:* No confundir cooperación con negociación colectiva; un mismo tema no puede ser objeto de ambas a la vez.
-  4. *Rol de RRHH (Dueño vs. Asesor):* Justificar por qué la política legalista y de asesoría a la supervisión es la más sostenible para garantizar la paz laboral.
+#tip-parcial(title: "Claves de Corrección del Equipo Docente (Segundo Parcial Oral)")[
+  1. *Modalidad del Segundo Parcial:* Examen oral sincrónico y virtual en parejas asignadas por orden alfabético estricto (Siu Guaraní). Cinco preguntas puntuales por pareja para responder en aproximadamente 10 a 12 minutos.
+  2. *Alcance de Textos:* La *Unidad 3 ENTRA COMPLETA* (Longo, Chiavenato Cap. 11, 12 y 13, y Aquino).
+  3. *Dimensión Colectiva en Longo:* Saber justificar que el subsistema no gestiona conflictos individuales entre dos empleados, sino los vínculos formales e institucionales con la totalidad del personal o sus sindicatos.
+  4. *Prestaciones Sociales como Factores Higiénicos (Herzberg):* Las prestaciones (remuneración indirecta) satisfacen necesidades básicas y previenen la insatisfacción y huelgas, pero no motivan por sí solas en el largo plazo sin un trabajo desafiante.
+  5. *Acto Inseguro vs. Condición Insegura:* Condición es la falla material en la planta (pisos resbaladizos, cables pelados); acto es la falla humana del trabajador (no usar casco o guantes térmicos).
+  6. *Incapacidades y Readecuación de Tareas:* Ante una incapacidad parcial y permanente, la empresa o el Estado debe readecuar las tareas del trabajador; ante incapacidad total, se gestiona el retiro/jubilación por junta médica oficial (Comisión 18 / Anses).
+  7. *Incompatibilidad Simultánea de Douglas McGregor:* No se puede negociar colectivamente ("repartir la torta") y cooperar ("agrandar la torta") simultáneamente sobre un mismo tema.
+  8. *Rol de RRHH: Dueño vs. Asesor:* Rechazar la política del "Dueño" (anula la autoridad de los mandos medios) y defender la política del "Asesor" (capacitar a los supervisores de línea para que lideren la relación gremial).
 ]
 
 #v(25pt)
 #align(center)[
   #text(size: 9pt, style: "italic", fill: rgb("#718096"))[
     Fin del Dossier Académico · Unidad 3: Relaciones Humanas y Sociales \
-    Gestión de Recursos Humanos III — Ciclo Lectivo 2025
+    Gestión de Recursos Humanos 3
   ]
 ]

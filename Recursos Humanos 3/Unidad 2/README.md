@@ -1,24 +1,19 @@
 # 🔍 Unidad 2: Auditoría y Control de Recursos Humanos
 ## Guía de Estudio y Navegación por Autores
 
-Bienvenido a la carpeta de estudio de la **Unidad 2** de **Gestión de Recursos Humanos III**. Esta unidad constituye la "columna vertebral dura" de la gestión de personas: control estratégico, sistemas de información (SIRH) y auditoría integral de personal.
+Bienvenido a la carpeta de estudio de la **Unidad 2** de **Gestión de Recursos Humanos 3**. Esta unidad aborda el control estratégico, los sistemas de información de recursos humanos (SIRH) y la auditoría integral de personal.
 
 ---
 
-## 📑 Índice de Autores de la Unidad 2
+## 📑 Índice de Autores y Materiales de la Unidad 2
 
-1. 📘 [**01. Jorge Hintze**](./01_Jorge_Hintze_Control_y_Evaluacion_de_Gestion.md)
-   * *Obra*: *Control y evaluación de gestión y resultados de gestión* (Documentos TOP).
-   * *Claves*: Distinción rigurosa entre **Datos, Información, Control y Evaluación**, los 3 objetos (Resultados, Procesos, Organización), Sistemas de Gestión vs. SICE (el sistema nervioso), y fases institucionales de control.
-2. 📘 [**02. Naranjo Pérez, Mesa Espinosa y Solera Salas**](./02_Naranjo_Perez_Control_Estrategico.md)
-   * *Obra*: *El control estratégico. Lo que no debemos obviar*.
-   * *Claves*: Naturaleza prospectiva del control estratégico, control de vigilancia del entorno, perfil del controlador estratégico, mecanismos de regulación de conducta (Johnson y Scholes) y el modelo de Lorino (FCE e inductores de eficiencia).
-3. 📘 [**03. Idalberto Chiavenato**](./03_Idalberto_Chiavenato_SIA_y_Control_de_RRHH.md)
-   * *Obra*: *Administración de Recursos Humanos* (Capítulo 16).
-   * *Claves*: Cadena de procesamiento (Datos vs. Información), Banco de Datos de RRHH (6 registros), el SIRH (Inputs, Procesamiento, Outputs), responsabilidad de línea vs. función de staff, disciplina progresiva y las 4 etapas del control.
-4. 📘 [**04. Vladimir Vega Falcón y cols.**](./04_Vega_Falcon_Auditoria_de_Recursos_Humanos.md)
-   * *Obra*: *Auditoría de Recursos Humanos*.
-   * *Claves*: Carácter no punitivo y formativo de la auditoría, perfil del auditor ("dos oídos y una boca"), 3 etapas del proceso, los 5 enfoques de investigación (comparativo, estadístico, retrospectivo, etc.) y segmentación del informe final para línea, RRHH y dirección general.
+| Autor / Obra | Documento PDF (Listo para imprimir) | Resumen Exhaustivo (Markdown) | Código Fuente Typst |
+| :--- | :--- | :--- | :--- |
+| **01. Jorge Hintze** <br>*(Control y evaluación de gestión y resultados)* | 📕 [**Ver PDF**](./01_Jorge_Hintze_Control_y_Evaluacion_de_Gestion.pdf) | 📝 [Ver Markdown](./markdown/01_Jorge_Hintze_Control_y_Evaluacion_de_Gestion.md) | ⚙️ [Ver Typst](./typst/01_Jorge_Hintze_Control_y_Evaluacion_de_Gestion.typ) |
+| **02. Naranjo Pérez y cols.** <br>*(El control estratégico. Lo que no debemos obviar)* | 📕 [**Ver PDF**](./02_Naranjo_Perez_Control_Estrategico.pdf) | 📝 [Ver Markdown](./markdown/02_Naranjo_Perez_Control_Estrategico.md) | ⚙️ [Ver Typst](./typst/02_Naranjo_Perez_Control_Estrategico.typ) |
+| **03. Idalberto Chiavenato** <br>*(SIA y Control de Recursos Humanos)* | 📕 [**Ver PDF**](./03_Idalberto_Chiavenato_SIA_y_Control_de_RRHH.pdf) | 📝 [Ver Markdown](./markdown/03_Idalberto_Chiavenato_SIA_y_Control_de_RRHH.md) | ⚙️ [Ver Typst](./typst/03_Idalberto_Chiavenato_SIA_y_Control_de_RRHH.typ) |
+| **04. Vladimir Vega Falcón y cols.** <br>*(Auditoría de Recursos Humanos)* | 📕 [**Ver PDF**](./04_Vega_Falcon_Auditoria_de_Recursos_Humanos.pdf) | 📝 [Ver Markdown](./markdown/04_Vega_Falcon_Auditoria_de_Recursos_Humanos.md) | ⚙️ [Ver Typst](./typst/04_Vega_Falcon_Auditoria_de_Recursos_Humanos.typ) |
+| **Dossier Completo de la Unidad 2** <br>*(Compilación integral de todos los autores)* | 📚 [**Ver Dossier PDF**](./Unidad_2_Auditoria_y_Control_RRHH.pdf) | — | ⚙️ [Ver Typst Master](./Unidad_2_Auditoria_y_Control_RRHH.typ) |
 
 ---
 
@@ -35,14 +30,19 @@ Bienvenido a la carpeta de estudio de la **Unidad 2** de **Gestión de Recursos 
 
 ## 🎓 Criterios de Evaluación Docente y Puntos Críticos de Examen (Desgrabaciones)
 
-De acuerdo con las devoluciones explícitas de las docentes en las clases:
+De acuerdo con las devoluciones explícitas de las docentes María Laura Cabezas y Débora en las clases:
 
-1. 🚗 **La Analogía del Auto Descompuesto (Control vs. Evaluación)**:
-   * *Evaluación*: Es la apreciación cualitativa y subjetiva al final del proceso (*"El auto no anda, me dejó a pata"*).
-   * *Control*: Es la medición técnica mediante instrumental especializado para determinar exactamente qué componente falló (*el mecánico chequeando la bujía o el embrague*).
-2. ⚠️ **La Pregunta Más Omitida del Parcial**:
-   * Las docentes advierten que la pregunta teórica sobre el concepto y fases de **Control (Hintze)** es la que más suelen dejar en blanco los alumnos, provocando la mayoría de los desaprobados.
-3. ⚖️ **El Carácter No Punitivo de la Auditoría**:
-   * Jamás debe definirse la auditoría como un mecanismo de castigo, vigilancia policial o persecución de empleados. Su objetivo es diagnosticar fallas procedimentales para **proponer mejoras y aprendizajes organizacionales**.
-4. 💾 **Dato no es Información**:
-   * En los parciales se exige explicar la cadena de valor: el dato es un elemento crudo y aislado que no permite decidir; la información es el dato procesado y contextualizado que reduce la incertidumbre.
+1. ⚠️ **Distribución de Textos para las Evaluaciones:**
+   * **Entran al Primer Parcial:** Idalberto Chiavenato, Naranjo Pérez y Vega Falcón.
+   * **NO entra al Parcial, pero SÍ al Final:** Jorge Hintze (no se llegó a dar en clases sincrónicas, pero es materia obligatoria de final).
+2. 💾 **Dato no es Información (Ejemplo de Clase):**
+   * Decir *"8 estudiantes"* es un dato primario aislado; decir *"8 estudiantes de 35 asistieron a clase presencial en Viedma"* es información con contexto y propósito de decisión.
+3. 🚗 **La Analogía del Auto Roto (Control vs. Evaluación):**
+   * *Evaluación*: Apreciación subjetiva al final (*"El auto no anda, me dejó a pata"*).
+   * *Control*: Medición técnica durante el proceso con parámetros objetivos (*el mecánico midiendo con el escáner*).
+4. 🏢 **Doble Función del SIRH (Línea vs. Staff):**
+   * RRHH tiene función de asesoría técnica (*staff*) sin mando jerárquico; los jefes operativos tienen la autoridad de mando (*línea*).
+5. ⚖️ **El Carácter Estrictamente No Punitivo de la Auditoría:**
+   * Jamás debe definirse la auditoría como un mecanismo de castigo, vigilancia policial o para sumarios. Su objetivo es que la organización **aprenda de sus errores** mediante recomendaciones de mejora.
+6. 🏥 **Ejemplo Real de Auditoría Externa:**
+   * El caso de los auditores externos instalándose de 4 a 5 días en universidades u hospitales revisando cajas de legajos, ordenanzas y actas para cotejar con la normativa vigente.

@@ -14,10 +14,10 @@
         columns: (1fr, auto),
         align: (left, right),
         text(size: 8.5pt, fill: rgb("#4a5568"), font: "Liberation Sans", weight: "medium")[
-          Gestión de Recursos Humanos III · *Unidad 2: Auditoría y Control*
+          Gestión de Recursos Humanos 3 · *Unidad 2: Auditoría y Control de RRHH*
         ],
         text(size: 8.5pt, fill: rgb("#718096"), font: "Liberation Sans")[
-          Dossier Académico 2025
+          Gestión de Recursos Humanos 3
         ]
       )
       #v(-2pt)
@@ -154,7 +154,7 @@
   #v(0.3cm)
   #text(size: 9.5pt, fill: rgb("#718096"))[
     *Compilación Académica y Guía de Examen* \
-    Basado en los textos de estudio y las transcripciones oficiales de clases (2025)
+    Basado en los textos de estudio y las transcripciones oficiales de clases
   ]
 ]
 
@@ -417,26 +417,30 @@ El informe debe redactarse en secciones específicas según sus destinatarios:
   stroke: 0.5pt + rgb("#cbd5e0"),
   inset: 6.5pt,
   [*Autor(es)*], [*Eje Central del Aporte*], [*Concepto Clave de Control / Auditoría*], [*Herramientas / Modelos Principales*],
-  [Jorge Hintze], [Epistemología del control y la evaluación.], [**Control**: Comparación con estándar técnico. \ **Evaluación**: Comparación valorativa.], [Matriz de 3 Objetos (Resultados, Procesos, Organización) y el SICE.],
-  [Naranjo Pérez y cols.], [Control Estratégico y cambio de conducta.], [**Control Estratégico**: Orientado al futuro y al monitoreo del entorno turbulento.], [Modelo de Lorino (Factores Clave de Éxito e Inductores de Eficiencia).],
-  [Idalberto Chiavenato], [Sistemas de Información y Banco de Datos.], [**SIRH / SIA**: Flujo de entradas y salidas para la toma de decisiones.], [Banco de Datos estructurado (6 registros) y Disciplina Progresiva.],
-  [Vega Falcón y cols.], [Auditoría Integral de Recursos Humanos.], [**Auditoría**: Examen sistemático no punitivo con fines de aprendizaje.], [Los 5 Enfoques de Investigación y el Informe Segmentado.]
+  [Jorge Hintze], [Epistemología del control y la evaluación.], [*Control*: Comparación con estándar técnico. \ *Evaluación*: Comparación valorativa.], [Matriz de 3 Objetos (Resultados, Procesos, Organización) y el SICE.],
+  [Naranjo Pérez y cols.], [Control Estratégico y cambio de conducta.], [*Control Estratégico*: Orientado al futuro y al monitoreo del entorno turbulento.], [Modelo de Lorino (Factores Clave de Éxito e Inductores de Eficiencia).],
+  [Idalberto Chiavenato], [Sistemas de Información y Banco de Datos.], [*SIRH / SIA*: Flujo de entradas y salidas para la toma de decisiones.], [Banco de Datos estructurado (6 registros) y Disciplina Progresiva.],
+  [Vega Falcón y cols.], [Auditoría Integral de Recursos Humanos.], [*Auditoría*: Examen sistemático no punitivo con fines de aprendizaje.], [Los 5 Enfoques de Investigación y el Informe Segmentado.]
 )
 
 == 5.2. Los Mandamientos Docentes para Aprobar los Parciales
 
-#tip-parcial(title: "Claves de Corrección de la Cátedra (Desgrabaciones de Clase)")[
-  1. *No Dejar en Blanco la Pregunta sobre Control:* Las profesoras advierten que la pregunta sobre el concepto y fases de *Control (Hintze)* es la más omitida por los alumnos, provocando aplazos masivos.
-  2. *Diferencia Tajante entre Control y Evaluación:* El control mide hechos contra estándares técnicos objetivos (mecánico midiendo piezas); la evaluación emite juicios de valor cualitativos al final (el dueño diciendo que el auto no anda).
-  3. *Dato vs. Información:* Jamás deben usarse como sinónimos. El dato es el insumo crudo que no permite decidir; la información es el dato procesado con significado e intención.
-  4. *Carácter No Punitivo de la Auditoría:* Describir siempre la auditoría como un proceso de diagnóstico y aprendizaje organizacional, nunca como una sanción o investigación policial de empleados.
-  5. *Uso Estricto de Vocabulario Técnico:* Se reprueba el uso de lenguaje puramente coloquial o de "sentido común".
+#tip-parcial(title: "Claves de Corrección del Equipo Docente (Clases Desgrabadas)")[
+  1. *Condición de los Textos para el Examen:*
+     - *Textos que ENTRAN al Primer Parcial:* Idalberto Chiavenato, Naranjo Pérez y Vega Falcón.
+     - *Texto que NO entra al Parcial, pero SÍ al Final:* Jorge Hintze (no se llegó a desarrollar íntegramente en las clases sincrónicas, pero es materia obligatoria de final).
+  2. *Dato vs. Información:* Jamás deben usarse como sinónimos. El dato es el valor nominal aislado ("8 estudiantes"); la información es el dato procesado en contexto que permite decidir ("8 de 35 asistieron a clase en Viedma").
+  3. *Control vs. Evaluación (Ejemplo del Auto Roto):* El control mide hechos en proceso contra parámetros técnicos objetivos (el mecánico con el escáner); la evaluación emite un juicio valorativo al final (el conductor diciendo "el auto me dejó a pata").
+  4. *La Doble Función del SIRH:* Recordar siempre que el área de personal tiene *función de staff* (asesoría técnica) mientras que los jefes operativos tienen la *responsabilidad de línea* (mando directo y sanciones).
+  5. *Carácter Estrictamente No Punitivo de la Auditoría:* Es un error grave en la corrección sostener que la auditoría busca castigar o hacer sumarios; su objetivo es pedagógico y de aprendizaje organizacional.
+  6. *Auditoría Interna vs. Externa (Ejemplo Real de Clase):* La interna es económica pero vulnerable a la pérdida de objetividad; la externa garantiza neutralidad total (ejemplo del equipo auditor que se instala 4 a 5 días en hospitales o universidades revisando cajas de legajos y actas).
+  7. *Uso Estricto de Vocabulario Técnico:* Las docentes reprueban el uso de lenguaje coloquial; exigen usar términos como *desvíos, parámetros técnicos, señales débiles, centros de responsabilidad e inductores de eficiencia*.
 ]
 
 #v(25pt)
 #align(center)[
   #text(size: 9pt, style: "italic", fill: rgb("#718096"))[
     Fin del Dossier Académico · Unidad 2: Auditoría y Control de Recursos Humanos \
-    Gestión de Recursos Humanos III — Ciclo Lectivo 2025
+    Gestión de Recursos Humanos 3
   ]
 ]
