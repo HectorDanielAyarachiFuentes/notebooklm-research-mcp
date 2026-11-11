@@ -1,0 +1,82 @@
+---
+title: "Informe Académico y Metodológico"
+subtitle: "Proyecto Final de RRHH - IPET N° 1 (Ciclo 2025)"
+author: "NotebookLM Research Engine & Antigravity"
+date: "Noviembre 2026"
+format:
+  typst:
+    toc: true
+    toc-title: "Índice de Contenidos"
+    number-sections: true
+    margin:
+      x: 2.5cm
+      y: 2.5cm
+    papersize: a4
+---
+
+# Introducción y Portada del Cuaderno
+
+El presente documento constituye un informe exhaustivo estructurado en cuatro secciones principales basado en las fuentes oficiales del cuaderno de trabajo académico.
+
+Este proyecto articula los saberes adquiridos a lo largo de la formación técnica en Recursos Humanos, vinculando la teoría diagnóstica con la intervención organizacional práctica.
+
+![Entorno de trabajo y cuadernos de investigación en Google NotebookLM](notebooklm_cover.jpg){fig-align="center" width="95%"}
+
+\newpage
+
+# Presentación y Fundamentación de la Materia
+
+## Naturaleza del Proyecto Final
+
+La materia **Proyecto Final de RRHH (IPET N° 1)** se erige como el espacio curricular integrador por excelencia. Su propósito sustancial es que el estudiante consolide las competencias profesionales indispensables para diagnosticar problemáticas organizacionales complejas y formular planes estratégicos factibles.
+
+### Objetivos Generales
+1. **Integración Teórico-Práctica:** Transferir marcos conceptuales de gestión del talento humano, relaciones laborales, diseño de puestos y compensaciones a escenarios corporativos reales.
+2. **Desarrollo del Pensamiento Estratégico:** Analizar la cultura, la estructura jerárquica y el clima sociolaboral desde una perspectiva holística y crítica.
+3. **Rigurosidad Metodológica:** Emplear técnicas formales de investigación cualitativa y cuantitativa para la toma de decisiones informadas.
+
+### Justificación Pedagógica y Profesional
+En el escenario actual, los departamentos de gestión de personas demandan técnicos capaces de identificar necesidades reales en el terreno operativo y transformarlas en propuestas de valor sostenibles. El trabajo anual exige rigurosidad ética, confidencialidad con las empresas colaboradoras y excelencia en la redacción técnica.
+
+\newpage
+
+# Estructura del Anteproyecto (Primera Entrega)
+
+La primera entrega formal tiene por finalidad validar la viabilidad del campo de estudio y delimitar con precisión el alcance de la intervención.
+
+## Componentes Mandatorios de la Entrega
+
+### 1. Caracterización de la Organización
+- **Razón social y sector de actividad:** Identificación jurídica, modelo de negocios y encuadre de mercado.
+- **Misión, Visión y Valores:** Análisis de congruencia entre la identidad corporativa declarada y la práctica operativa.
+- **Estructura Orgánica:** Organigrama funcional actualizado, niveles jerárquicos y cantidad de dotación activa.
+
+### 2. Delimitación del Problema y Justificación
+- **Planteamiento del síntoma vs. causa:** Diferenciar claramente los problemas perceptibles (rotación excesiva, ausentismo, fallas de comunicación) de sus causas profundas estructurales.
+- **Viabilidad del acceso al campo:** Carta formal de autorización y compromiso institucional firmada por las autoridades de la empresa.
+
+### 3. Matriz de Objetivos
+- **Objetivo General:** Meta global rectora redactada con verbos en infinitivo medibles.
+- **Objetivos Específicos:** Pasos metodológicos sucesivos requeridos para alcanzar la meta general.
+
+\newpage
+
+# Diagnóstico Organizacional (Segunda Entrega) y Cierre
+
+La segunda fase del proyecto profundiza en el análisis empírico y define los criterios finales de evaluación académica.
+
+## Metodología del Diagnóstico Operativo
+
+| Dimensión Analizada | Herramienta Aplicada | Indicador de Medición |
+|:---|:---|:---|
+| **Clima Organizacional** | Encuesta de Clima Laboral (Escala Likert) | % Satisfacción, eNPS interno |
+| **Diseño y Carga de Puestos** | Entrevistas en profundidad y Cuestionarios | Claridad de roles y solapamientos |
+| **Relaciones Laborales** | Auditoría documental y de convenios | Tasa de ausentismo y litigiosidad |
+| **Desempeño y Capacitación** | Matriz 9-Box y Evaluación por Competencias | Brecha de habilidades detectadas |
+
+## Criterios de Evaluación y Recomendaciones Finales
+
+* **Coherencia Diagnóstica:** Correspondencia estricta entre la recolección de datos y las conclusiones arribadas.
+* **Normas Formales de Presentación:** Cumplimiento de pautas tipográficas, normas APA para referencias y redacción en tercera persona objetiva.
+* **Defensa Oral:** Claridad conceptual, solvencia técnica y capacidad argumentativa ante el tribunal examinador del IPET N° 1.
+
