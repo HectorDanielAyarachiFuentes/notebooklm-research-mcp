@@ -15,10 +15,11 @@
 
 import type { BrowserContext, Page } from "patchright";
 import type { SharedContextManager } from "./shared-context-manager.js";
-import type { AuthManager } from "../auth/auth-manager.js";
+import { isSignInRedirectUrl, type AuthManager } from "../auth/auth-manager.js";
 import { humanType, randomDelay } from "../utils/stealth-utils.js";
 import { snapshotAllResponses } from "../utils/page-utils.js";
 import { waitForStableAnswer, snapshotPriorAnswers } from "../notebooklm/chat.js";
+import { Selectors, joinAlt } from "../notebooklm/selectors.js";
 import {
   extractCitations as extractCitationsFromPage,
   type SourceFormat,
@@ -123,20 +124,33 @@ export class BrowserSession {
         timeout: config.browserTimeout,
       });
 
-      // Wait for page to stabilize
-      await randomDelay(2000, 3000, config);
+      // Short settle before checking redirects / UI readiness
+      await randomDelay(200, 450, config);
 
-      // Check if we need to login
-      const isAuthenticated = await this.authManager.validateCookiesExpiry(this.context);
-
-      if (!isAuthenticated) {
-        log.warning(`  🔑 Session ${this.sessionId} needs authentication`);
-        const loginSuccess = await this.ensureAuthenticated(config);
-        if (!loginSuccess) {
-          throw new Error("Failed to authenticate session");
+      // Fail fast on expired/signed-out Google sessions instead of waiting 15s for chat UI
+      if (isSignInRedirectUrl(this.page.url())) {
+        log.warning(
+          `  🔒 Session ${this.sessionId} redirected to Google sign-in/landing (${this.page.url().slice(0, 80)})`
+        );
+        const recovered = await this.ensureAuthenticated(config, true);
+        if (!recovered || isSignInRedirectUrl(this.page.url())) {
+          throw new Error(
+            "Google session is not active (redirected to sign-in / trynow). Please run re_auth or setup_auth."
+          );
         }
       } else {
-        log.success(`  ✅ Session already authenticated`);
+        // Check if we need to login based on cookie metadata
+        const isAuthenticated = await this.authManager.validateCookiesExpiry(this.context);
+
+        if (!isAuthenticated) {
+          log.warning(`  🔑 Session ${this.sessionId} needs authentication`);
+          const loginSuccess = await this.ensureAuthenticated(config);
+          if (!loginSuccess) {
+            throw new Error("Failed to authenticate session");
+          }
+        } else {
+          log.success(`  ✅ Session already authenticated`);
+        }
       }
 
       // CRITICAL: Restore sessionStorage from saved state
@@ -186,31 +200,35 @@ export class BrowserSession {
       throw new Error("Page not initialized");
     }
 
+    if (isSignInRedirectUrl(this.page.url())) {
+      throw new Error(
+        "Google session is not active (redirected to sign-in / trynow). Please run re_auth or setup_auth."
+      );
+    }
+
     try {
-      // PRIMARY: Exact Python selector - textarea.query-box-input
       log.info("  ⏳ Waiting for chat input (textarea.query-box-input)...");
-      await this.page.waitForSelector("textarea.query-box-input", {
-        timeout: 10000, // Python uses 10s timeout
-        state: "visible", // ONLY check visibility (NO disabled check!)
-      });
+      await this.page.waitForSelector(
+        'textarea.query-box-input, textarea[aria-label="Feld für Anfragen"]',
+        {
+          timeout: 12000,
+          state: "visible", // ONLY check visibility (NO disabled check!)
+        }
+      );
       log.success("  ✅ Chat input ready!");
-    } catch {
-      // FALLBACK: Python alternative selector
-      try {
-        log.info("  ⏳ Trying fallback selector (aria-label)...");
-        await this.page.waitForSelector('textarea[aria-label="Feld für Anfragen"]', {
-          timeout: 5000, // Python uses 5s for fallback
-          state: "visible",
-        });
-        log.success("  ✅ Chat input ready (fallback)!");
-      } catch (error) {
-        log.error(`  ❌ NotebookLM interface not ready: ${error}`);
+    } catch (error) {
+      if (isSignInRedirectUrl(this.page.url())) {
         throw new Error(
-          "Could not find NotebookLM chat input. " +
-            "Please ensure the notebook page has loaded correctly.",
+          "Google session is not active (redirected to sign-in / trynow). Please run re_auth or setup_auth.",
           { cause: error }
         );
       }
+      log.error(`  ❌ NotebookLM interface not ready: ${error}`);
+      throw new Error(
+        "Could not find NotebookLM chat input. " +
+          "Please ensure the notebook page has loaded correctly.",
+        { cause: error }
+      );
     }
   }
 
@@ -229,41 +247,60 @@ export class BrowserSession {
   /**
    * Ensure the session is authenticated, perform auto-login if needed
    */
-  private async ensureAuthenticated(config: Config = this.config): Promise<boolean> {
+  private async ensureAuthenticated(
+    config: Config = this.config,
+    forceRelogin: boolean = false
+  ): Promise<boolean> {
     if (!this.page) {
       throw new Error("Page not initialized");
     }
 
     log.info(`🔑 Checking authentication for session ${this.sessionId}...`);
 
-    // Check cookie validity
-    const isValid = await this.authManager.validateCookiesExpiry(this.context);
+    // Skip local timestamp-only validation when Google already bounced us to sign-in.
+    if (!forceRelogin) {
+      const isValid = await this.authManager.validateCookiesExpiry(this.context);
 
-    if (isValid) {
-      log.success(`  ✅ Cookies valid`);
-      return true;
+      if (isValid) {
+        log.success(`  ✅ Cookies valid`);
+        return true;
+      }
     }
 
-    log.warning(`  ⚠️  Cookies expired or invalid`);
+    log.warning(`  ⚠️  Cookies expired or session rejected by Google`);
 
-    // Try to get valid auth state
-    const statePath = await this.authManager.getValidStatePath();
+    // Try saved state unless forceRelogin happened after we already synced state.json into this context
+    const alreadySyncedState =
+      this.sharedContextManager.hasSyncedStateForCurrentContext?.() ?? false;
+    const statePath =
+      forceRelogin && alreadySyncedState ? null : await this.authManager.getValidStatePath();
 
     if (statePath) {
       // Load saved state
       log.info(`  📂 Loading auth state from: ${statePath}`);
-      await this.authManager.loadAuthState(this.context, statePath);
+      const loaded = await this.authManager.loadAuthState(this.context, statePath);
+      if (loaded) {
+        this.sharedContextManager.markStateSynced?.();
 
-      // Reload page to apply new auth
-      log.info(`  🔄 Reloading page...`);
-      await (this.page as Page).reload({ waitUntil: "domcontentloaded" });
-      await randomDelay(2000, 3000, config);
+        // Navigate back to the notebook URL if Google already redirected us to sign-in
+        if (isSignInRedirectUrl(this.page.url())) {
+          log.info(`  🌐 Returning to notebook after loading auth state: ${this.notebookUrl}`);
+          await (this.page as Page).goto(this.notebookUrl, {
+            waitUntil: "domcontentloaded",
+            timeout: config.browserTimeout,
+          });
+        } else {
+          log.info(`  🔄 Reloading page...`);
+          await (this.page as Page).reload({ waitUntil: "domcontentloaded" });
+        }
+        await randomDelay(250, 500, config);
 
-      // Check if it worked
-      const nowValid = await this.authManager.validateCookiesExpiry(this.context);
-      if (nowValid) {
-        log.success(`  ✅ Auth state loaded successfully`);
-        return true;
+        // Check if it worked
+        const nowValid = await this.authManager.validateCookiesExpiry(this.context);
+        if (nowValid && !isSignInRedirectUrl(this.page.url())) {
+          log.success(`  ✅ Auth state loaded successfully`);
+          return true;
+        }
       }
     }
 
@@ -287,7 +324,7 @@ export class BrowserSession {
           waitUntil: "domcontentloaded",
           timeout: config.browserTimeout,
         });
-        await randomDelay(2000, 3000, config);
+        await randomDelay(250, 500, config);
         return true;
       } else {
         log.error(`  ❌ Auto-login failed`);
@@ -427,15 +464,28 @@ export class BrowserSession {
       });
 
       // Small pause before submitting
-      await randomDelay(500, 1000, config);
+      await randomDelay(80, 180, config);
 
       // Submit the question (Enter key)
       log.info(`  📤 Submitting question...`);
       await sendProgress?.("Submitting question...", 3, 5);
       await page.keyboard.press("Enter");
 
-      // Small pause after submit
-      await randomDelay(1000, 1500, config);
+      // Brief settle before checking submit fallback and polling streaming answer
+      await randomDelay(150, 300, config);
+
+      // Fallback if Enter left unsent text in the box (e.g. IME/multiline/button-only build)
+      const remainingInput = await page
+        .locator(inputSelector)
+        .inputValue()
+        .catch(() => "");
+      if (remainingInput.trim().length > 0) {
+        const submitBtn = await page.$(joinAlt(Selectors.chat.submitButton)).catch(() => null);
+        if (submitBtn && (await submitBtn.isVisible().catch(() => false))) {
+          await submitBtn.click().catch(() => undefined);
+          await randomDelay(100, 200, config);
+        }
+      }
 
       // Wait for the response with streaming-stability detection (issue #43).
       // Timeout comes from effective config so callers can override it via
@@ -445,7 +495,7 @@ export class BrowserSession {
       const answer = await waitForStableAnswer(page, {
         question,
         timeoutMs: config.answerTimeoutMs,
-        pollIntervalMs: 750,
+        pollIntervalMs: 500,
         ignoreTexts: existingResponses,
       });
 

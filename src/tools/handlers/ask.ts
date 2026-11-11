@@ -65,7 +65,15 @@ export async function handleAskQuestion(
       }
       resolvedNotebookUrl = notebook.url;
       log.info(`  Resolved notebook: ${notebook.name}`);
-    } else if (!resolvedNotebookUrl) {
+    } else if (!resolvedNotebookUrl && session_id) {
+      const existingSession = deps.sessionManager.getSession?.(session_id);
+      if (existingSession) {
+        resolvedNotebookUrl = existingSession.notebookUrl;
+        log.info(`  Reusing notebook URL from existing session: ${session_id}`);
+      }
+    }
+
+    if (!resolvedNotebookUrl && !notebook_id) {
       const active = deps.library.getActiveNotebook();
       if (active) {
         const notebook = deps.library.incrementUseCount(active.id);

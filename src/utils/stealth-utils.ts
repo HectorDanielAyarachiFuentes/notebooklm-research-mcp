@@ -91,11 +91,6 @@ export async function randomDelay(
   maxMs = maxMs ?? config.maxDelayMs;
 
   if (!config.stealthEnabled || !config.stealthRandomDelays) {
-    // Fixed delay (average)
-    const target = minMs === maxMs ? minMs : (minMs + maxMs) / 2;
-    if (target > 0) {
-      await sleep(target);
-    }
     return;
   }
 
@@ -162,12 +157,27 @@ export async function humanType(
   await page.click(selector);
   await randomDelay(20, 60, config);
 
-  // Type each character
+  // Type using single code points initially, then small natural bursts for long prompts
+  // so multi-sentence questions don't stall on hundreds of sequential CDP fill calls.
+  const chars = Array.from(text);
+  const singleCharPrefix = chars.length > 60 ? 24 : chars.length;
   let currentText = "";
   let i = 0;
 
-  while (i < text.length) {
-    const char = text[i];
+  while (i < chars.length) {
+    if (i >= singleCharPrefix) {
+      const burstSize = randomInt(3, 5);
+      const nextSlice = chars.slice(i, i + burstSize);
+      currentText += nextSlice.join("");
+      await page.fill(selector, currentText);
+      const burstDelay =
+        randomFloat(avgDelayMs * 0.9, avgDelayMs * 1.4) * Math.min(nextSlice.length, 2);
+      await sleep(burstDelay);
+      i += nextSlice.length;
+      continue;
+    }
+
+    const char = chars[i];
 
     // Simulate very rare typo (0.3% chance) and shorter correction
     if (withTypos && Math.random() < 0.003 && i > 0) {
@@ -183,7 +193,7 @@ export async function humanType(
       // Backspace
       currentText = currentText.slice(0, -1);
       await page.fill(selector, currentText);
-      await randomDelay(20, 60, config);
+      await randomDelay(15, 45, config);
     }
 
     // Type correct character
@@ -209,7 +219,7 @@ export async function humanType(
   }
 
   // Small delay after finishing typing
-  await randomDelay(50, 120, config);
+  await randomDelay(20, 60, config);
 }
 
 // ============================================================================

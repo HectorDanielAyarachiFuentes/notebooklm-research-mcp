@@ -16,7 +16,12 @@ import type { BrowserContext, ElementHandle, Page } from "patchright";
 import fs from "fs/promises";
 import { existsSync } from "fs";
 import path from "path";
-import { CONFIG, NOTEBOOKLM_AUTH_URL, type Config } from "../config.js";
+import {
+  CONFIG,
+  NOTEBOOKLM_AUTH_URL,
+  resolveBrowserLocaleOptions,
+  type Config,
+} from "../config.js";
 import { log } from "../utils/logger.js";
 import {
   getPreferredChannel,
@@ -47,14 +52,34 @@ const CRITICAL_COOKIE_NAMES = [
 ];
 
 /**
- * Return true if the URL belongs to NotebookLM / Gemini Notebook web origin.
+ * Return true when Google redirected to a sign-in or unauthenticated landing page
+ * (e.g. accounts.google.com or notebook*.google.com/trynow|/login).
+ */
+export function isSignInRedirectUrl(url: string): boolean {
+  try {
+    const parsed = new URL(url);
+    if (parsed.hostname === "accounts.google.com") {
+      return true;
+    }
+    return (
+      (parsed.hostname === "notebooklm.google.com" || parsed.hostname === "notebook.google.com") &&
+      (parsed.pathname === "/trynow" || parsed.pathname.startsWith("/login"))
+    );
+  } catch {
+    return false;
+  }
+}
+
+/**
+ * Return true if the URL belongs to an authenticated NotebookLM / Gemini Notebook web origin.
  */
 export function isNotebookLmUrl(url: string): boolean {
   try {
     const parsed = new URL(url);
     return (
       parsed.protocol === "https:" &&
-      (parsed.hostname === "notebooklm.google.com" || parsed.hostname === "notebook.google.com")
+      (parsed.hostname === "notebooklm.google.com" || parsed.hostname === "notebook.google.com") &&
+      !isSignInRedirectUrl(url)
     );
   } catch {
     return false;
@@ -960,8 +985,7 @@ export class AuthManager {
       const baseLaunchOptions = {
         headless: !shouldShowBrowser,
         viewport: config.viewport,
-        locale: "en-US",
-        timezoneId: "Europe/Berlin",
+        ...resolveBrowserLocaleOptions(),
         args: [
           "--disable-blink-features=AutomationControlled",
           "--disable-dev-shm-usage",

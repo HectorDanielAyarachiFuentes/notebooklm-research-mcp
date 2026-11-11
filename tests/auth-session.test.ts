@@ -7,7 +7,12 @@ import type { BrowserContext } from "patchright";
 import { AuthManager } from "../src/auth/auth-manager.js";
 import { CONFIG } from "../src/config.js";
 import { NotebookLibrary } from "../src/library/notebook-library.js";
+import { BrowserSession } from "../src/session/browser-session.js";
 import { SessionManager } from "../src/session/session-manager.js";
+import {
+  SharedContextManager,
+  shouldSyncSavedState,
+} from "../src/session/shared-context-manager.js";
 import { ToolHandlers } from "../src/tools/handlers.js";
 
 const CRITICAL_COOKIES = [
@@ -176,4 +181,142 @@ test("ToolHandlers manages notebook library CRUD and session lookup errors safel
     assert.equal(removeRes.success, true);
     assert.equal(library.listNotebooks().length, 0);
   });
+});
+
+test("shouldSyncSavedState injects state.json on empty profiles and newer imports without clobbering rotated cookies", () => {
+  assert.equal(
+    shouldSyncSavedState({
+      stateMtimeMs: 1_000,
+      cookiesDbMtimeMs: 5_000,
+      lastLoadedStateMtimeMs: null,
+      contextCreatedAtMs: 5_000,
+      hasValidContextCookies: false,
+      isReuse: false,
+    }),
+    true
+  );
+
+  assert.equal(
+    shouldSyncSavedState({
+      stateMtimeMs: 10_000,
+      cookiesDbMtimeMs: 5_000,
+      lastLoadedStateMtimeMs: null,
+      contextCreatedAtMs: 11_000,
+      hasValidContextCookies: true,
+      isReuse: false,
+    }),
+    true
+  );
+
+  assert.equal(
+    shouldSyncSavedState({
+      stateMtimeMs: 5_000,
+      cookiesDbMtimeMs: 10_000,
+      lastLoadedStateMtimeMs: null,
+      contextCreatedAtMs: 11_000,
+      hasValidContextCookies: true,
+      isReuse: false,
+    }),
+    false
+  );
+
+  assert.equal(
+    shouldSyncSavedState({
+      stateMtimeMs: 15_000,
+      cookiesDbMtimeMs: null,
+      lastLoadedStateMtimeMs: 10_000,
+      contextCreatedAtMs: 11_000,
+      hasValidContextCookies: true,
+      isReuse: true,
+    }),
+    true
+  );
+
+  assert.equal(
+    shouldSyncSavedState({
+      stateMtimeMs: 10_000,
+      cookiesDbMtimeMs: null,
+      lastLoadedStateMtimeMs: 10_000,
+      contextCreatedAtMs: 11_000,
+      hasValidContextCookies: false,
+      isReuse: true,
+    }),
+    false
+  );
+});
+
+test("BrowserSession.init rescues sign-in redirect via loadAuthState when unsynced, and fast-fails when already synced", async () => {
+  const notebookUrl = "https://notebook.google.com/notebook/test-nb";
+
+  async function runScenario(initiallySynced: boolean) {
+    let currentUrl = "about:blank";
+    let synced = initiallySynced;
+    let loadCalls = 0;
+    let reloadCalls = 0;
+    const gotoCalls: string[] = [];
+    let hasValidAuth = false;
+
+    const fakePage = {
+      url: () => currentUrl,
+      isClosed: () => false,
+      close: async () => undefined,
+      evaluate: async () => undefined,
+      goto: async (url: string) => {
+        gotoCalls.push(url);
+        currentUrl = hasValidAuth
+          ? url
+          : "https://accounts.google.com/v3/signin/identifier?continue=" + encodeURIComponent(url);
+      },
+      reload: async () => {
+        reloadCalls += 1;
+      },
+      waitForSelector: async () => ({}) as unknown,
+    };
+
+    const fakeContext = {
+      newPage: async () => fakePage,
+    } as unknown as BrowserContext;
+
+    const fakeSharedContext = {
+      getOrCreateContext: async () => fakeContext,
+      hasSyncedStateForCurrentContext: () => synced,
+      markStateSynced: () => {
+        synced = true;
+      },
+    } as unknown as SharedContextManager;
+
+    const fakeAuth = {
+      getValidStatePath: async () => "C:\\fake\\state.json",
+      loadAuthState: async () => {
+        loadCalls += 1;
+        hasValidAuth = true;
+        return true;
+      },
+      validateCookiesExpiry: async () => hasValidAuth,
+      loadSessionStorage: async () => null,
+    } as unknown as AuthManager;
+
+    const testConfig = {
+      ...CONFIG,
+      stealthEnabled: false,
+      autoLoginEnabled: false,
+    };
+    const session = new BrowserSession("test-sess", fakeSharedContext, fakeAuth, notebookUrl, testConfig);
+    return {
+      init: () => session.init(testConfig),
+      counts: () => ({ loadCalls, reloadCalls, gotoCalls, synced }),
+    };
+  }
+
+  const rescued = await runScenario(false);
+  await rescued.init();
+  assert.equal(rescued.counts().loadCalls, 1);
+  assert.equal(rescued.counts().reloadCalls, 0);
+  assert.deepEqual(rescued.counts().gotoCalls, [notebookUrl, notebookUrl]);
+  assert.equal(rescued.counts().synced, true);
+
+  const rejected = await runScenario(true);
+  await assert.rejects(rejected.init(), /Google session is not active/i);
+  assert.equal(rejected.counts().loadCalls, 0);
+  assert.equal(rejected.counts().gotoCalls.length, 1);
 });

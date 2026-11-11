@@ -9,7 +9,7 @@ import {
   validateExtractedCookies,
 } from "../chrome_extension/cookie-utils.js";
 import { parseCookiesInput } from "../scripts/import_cookies.js";
-import { isNotebookLmUrl } from "../src/auth/auth-manager.js";
+import { isNotebookLmUrl, isSignInRedirectUrl } from "../src/auth/auth-manager.js";
 
 const NOW_SEC = 1_800_000_000;
 
@@ -157,12 +157,19 @@ test("import_cookies parseCookiesInput handles both lossless state.json and lega
   assert.throws(() => parseCookiesInput(JSON.stringify({ cookies: [] }), NOW_SEC), /no cookies/i);
 });
 
-test("isNotebookLmUrl accepts both notebooklm.google.com and notebook.google.com", () => {
+test("isNotebookLmUrl and isSignInRedirectUrl separate active notebooks from sign-in landings", () => {
   assert.equal(isNotebookLmUrl("https://notebooklm.google.com/notebook/abc"), true);
   assert.equal(isNotebookLmUrl("https://notebook.google.com/?icid=home_maincta"), true);
+  assert.equal(isNotebookLmUrl("https://notebook.google.com/trynow"), false);
+  assert.equal(isNotebookLmUrl("https://notebook.google.com/login?continue=abc"), false);
   assert.equal(isNotebookLmUrl("https://accounts.google.com/v3/signin"), false);
   assert.equal(isNotebookLmUrl("https://notebook.google.com.evil.com/"), false);
   assert.equal(isNotebookLmUrl("http://notebook.google.com/"), false);
   assert.equal(isNotebookLmUrl("not-a-url"), false);
+
+  assert.equal(isSignInRedirectUrl("https://accounts.google.com/v3/signin/accountchooser"), true);
+  assert.equal(isSignInRedirectUrl("https://notebook.google.com/trynow"), true);
+  assert.equal(isSignInRedirectUrl("https://notebooklm.google.com/login"), true);
+  assert.equal(isSignInRedirectUrl("https://notebook.google.com/notebook/abc"), false);
 });
 

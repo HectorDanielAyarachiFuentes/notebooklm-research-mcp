@@ -112,15 +112,15 @@ const DEFAULTS: Config = {
   loginPassword: "",
   autoLoginTimeoutMs: 120000, // 2 minutes
 
-  // Stealth Settings
+  // Stealth Settings (tuned for fast interaction while keeping natural variation)
   stealthEnabled: true,
   stealthRandomDelays: true,
   stealthHumanTyping: true,
   stealthMouseMovements: true,
-  typingWpmMin: 160,
-  typingWpmMax: 240,
-  minDelayMs: 100,
-  maxDelayMs: 400,
+  typingWpmMin: 260,
+  typingWpmMax: 420,
+  minDelayMs: 40,
+  maxDelayMs: 150,
 
   // Paths (cross-platform via env-paths)
   configDir: paths.config,
@@ -377,3 +377,15 @@ export function applyBrowserOptions(options?: BrowserOptions, legacyShowBrowser?
 
 // Create directories on import
 ensureDirectories();
+
+/**
+ * Resolve browser locale and IANA timezone from env overrides or the host OS.
+ * Strips Unicode `-u-...` extensions so Chromium receives a clean BCP-47 locale tag.
+ */
+export function resolveBrowserLocaleOptions(): { locale: string; timezoneId: string } {
+  const resolved = Intl.DateTimeFormat().resolvedOptions();
+  const rawLocale = process.env.BROWSER_LOCALE?.trim() || resolved.locale || "en-US";
+  const locale = rawLocale.split("-u-")[0] || "en-US";
+  const timezoneId = process.env.BROWSER_TIMEZONE?.trim() || resolved.timeZone || "UTC";
+  return { locale, timezoneId };
+}

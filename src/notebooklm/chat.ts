@@ -18,6 +18,7 @@
 import type { Page } from "patchright";
 import { Selectors } from "./selectors.js";
 import { isRecoverable, pageIsAlive, safeSleep } from "../browser/watchdog.js";
+import { isSignInRedirectUrl } from "../auth/auth-manager.js";
 
 /**
  * Loading-state phrases NotebookLM streams into the answer container before
@@ -196,7 +197,7 @@ export interface AskOptions {
   question?: string;
   /** Hard ceiling on the wait. Default 600 000 ms (10 min) — overridable per call. */
   timeoutMs?: number;
-  /** Poll cadence. Default 750 ms. Lower values increase load without much benefit. */
+  /** Poll cadence. Default 500 ms for responsive finish detection. */
   pollIntervalMs?: number;
   /** Texts known *before* the question was submitted. Used to skip prior answers. */
   ignoreTexts?: string[];
@@ -231,7 +232,7 @@ export async function waitForStableAnswer(
   const {
     question = "",
     timeoutMs = 600_000,
-    pollIntervalMs = 750,
+    pollIntervalMs = 500,
     ignoreTexts = [],
     stablePolls = 3,
   } = options;
@@ -256,6 +257,12 @@ export async function waitForStableAnswer(
       throw new Error("Browser page unresponsive: health check timed out");
     }
 
+    if (typeof page.url === "function" && isSignInRedirectUrl(page.url())) {
+      throw new Error(
+        "Google session is not active (redirected to sign-in / trynow). Please run re_auth or setup_auth."
+      );
+    }
+
     let candidate: string | null = null;
     try {
       candidate = await readLatestAnswer(page);
@@ -275,7 +282,7 @@ export async function waitForStableAnswer(
         if (isPlaceholder(candidate)) {
           stableStreak = 0;
           lastSeen = null;
-          await safeSleep(page, Math.min(pollIntervalMs, 400));
+          await safeSleep(page, Math.min(pollIntervalMs, 350));
           continue;
         }
 
@@ -305,14 +312,26 @@ export async function waitForStableAnswer(
 
 /**
  * Read the latest answer container's text and strip UI-control leakage.
- * Uses `:last-child` so we always target the most recent turn.
+ * Uses `:last-child` first and falls back to the last `.to-user-container` match
+ * so trailing UI footers/suggestions don't blind extraction.
  */
 async function readLatestAnswer(page: Page): Promise<string | null> {
   try {
-    const raw = await page
-      .locator(Selectors.chat.latestAnswerText)
-      .last()
-      .innerText({ timeout: 2_000 });
+    const preferred = page.locator(Selectors.chat.latestAnswerText);
+    const fallback = page.locator(Selectors.chat.answerText);
+    const hasCount = typeof preferred.count === "function" && typeof fallback.count === "function";
+
+    let locator = preferred;
+    if (hasCount) {
+      if ((await preferred.count()) === 0) {
+        if ((await fallback.count()) === 0) {
+          return null;
+        }
+        locator = fallback;
+      }
+    }
+
+    const raw = await locator.last().innerText({ timeout: 2_000 });
     const cleaned = sanitizeAnswer(raw);
     return cleaned.length > 0 ? cleaned : null;
   } catch {

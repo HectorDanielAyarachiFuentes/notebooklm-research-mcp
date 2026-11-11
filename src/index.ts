@@ -150,6 +150,7 @@ class NotebookLMMCPServer {
   private resourceHandlers: ResourceHandlers;
   private settingsManager: SettingsManager;
   private toolDefinitions: Tool[];
+  private requestShutdown?: (signal: string) => void;
 
   constructor() {
     // Initialize MCP Server
@@ -524,6 +525,7 @@ class NotebookLMMCPServer {
     const requestShutdown = (signal: string) => {
       void shutdown(signal);
     };
+    this.requestShutdown = requestShutdown;
 
     process.on("SIGINT", () => requestShutdown("SIGINT"));
     process.on("SIGTERM", () => requestShutdown("SIGTERM"));
@@ -568,7 +570,14 @@ class NotebookLMMCPServer {
       log.success("✅ MCP Server connected via Streamable HTTP");
     } else {
       const transport = new StdioServerTransport();
+      transport.onclose = () => {
+        this.requestShutdown?.("STDIO_CLOSE");
+      };
       await this.server.connect(transport);
+      // On Windows/IDE restarts the host closes the stdio pipe without POSIX signals;
+      // shut down Chrome cleanly so the next server start never inherits a locked profile.
+      process.stdin.on("end", () => this.requestShutdown?.("STDIN_END"));
+      process.stdin.on("close", () => this.requestShutdown?.("STDIN_CLOSE"));
       log.success("✅ MCP Server connected via stdio");
     }
 

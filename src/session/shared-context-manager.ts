@@ -14,7 +14,7 @@
 
 import type { BrowserContext } from "patchright";
 import { chromium } from "patchright";
-import { CONFIG, type Config } from "../config.js";
+import { CONFIG, resolveBrowserLocaleOptions, type Config } from "../config.js";
 import { log } from "../utils/logger.js";
 import type { AuthManager } from "../auth/auth-manager.js";
 import {
@@ -24,6 +24,55 @@ import {
 } from "../browser/chromium-fallback.js";
 import fs from "fs";
 import path from "path";
+
+export interface SavedStateSyncInput {
+  stateMtimeMs: number;
+  cookiesDbMtimeMs: number | null;
+  lastLoadedStateMtimeMs: number | null;
+  contextCreatedAtMs: number | null;
+  hasValidContextCookies: boolean;
+  isReuse: boolean;
+}
+
+/**
+ * Decide whether saved cookies from state.json should be injected into the persistent context.
+ * Patchright/Playwright launchPersistentContext() ignores storageState, so we explicitly inject
+ * saved cookies when the persistent profile lacks valid cookies or state.json is newer.
+ */
+export function shouldSyncSavedState(input: SavedStateSyncInput): boolean {
+  if (!input.hasValidContextCookies) {
+    return input.isReuse ? input.lastLoadedStateMtimeMs !== input.stateMtimeMs : true;
+  }
+  if (input.isReuse) {
+    if (input.lastLoadedStateMtimeMs !== null) {
+      return input.stateMtimeMs > input.lastLoadedStateMtimeMs;
+    }
+    return input.contextCreatedAtMs !== null && input.stateMtimeMs > input.contextCreatedAtMs;
+  }
+  if (input.cookiesDbMtimeMs === null) {
+    return true;
+  }
+  return input.stateMtimeMs > input.cookiesDbMtimeMs + 1000;
+}
+
+async function getProfileCookiesMtimeMs(profileDir: string): Promise<number | null> {
+  const candidates = [
+    path.join(profileDir, "Default", "Network", "Cookies"),
+    path.join(profileDir, "Default", "Cookies"),
+  ];
+  let newest: number | null = null;
+  for (const candidate of candidates) {
+    try {
+      const stats = await fs.promises.stat(candidate);
+      if (newest === null || stats.mtimeMs > newest) {
+        newest = stats.mtimeMs;
+      }
+    } catch {
+      // Cookie DB does not exist yet on a fresh profile
+    }
+  }
+  return newest;
+}
 
 /**
  * Shared Context Manager
@@ -41,6 +90,8 @@ export class SharedContextManager {
   private currentProfileDir: string | null = null;
   private isIsolatedProfile: boolean = false;
   private currentHeadlessMode: boolean | null = null;
+  private lastLoadedStateMtimeMs: number | null = null;
+  private loadedStateInCurrentContext: boolean = false;
 
   constructor(authManager: AuthManager) {
     this.authManager = authManager;
@@ -83,9 +134,29 @@ export class SharedContextManager {
       await this.recreateContext(overrideHeadless, config);
     } else {
       log.success("♻️  Reusing existing persistent context");
+      if (this.globalContext) {
+        await this.syncSavedStateIfNeeded(this.globalContext, true);
+      }
     }
 
     return this.globalContext!;
+  }
+
+  /**
+   * Whether state.json has already been injected into the active global context.
+   */
+  hasSyncedStateForCurrentContext(): boolean {
+    return this.loadedStateInCurrentContext;
+  }
+
+  /**
+   * Record that saved auth state was applied to the active global context.
+   */
+  markStateSynced(mtimeMs?: number): void {
+    this.loadedStateInCurrentContext = true;
+    if (mtimeMs !== undefined) {
+      this.lastLoadedStateMtimeMs = mtimeMs;
+    }
   }
 
   /**
@@ -143,12 +214,15 @@ export class SharedContextManager {
       }
     }
 
+    this.lastLoadedStateMtimeMs = null;
+    this.loadedStateInCurrentContext = false;
+
     // Check for saved auth
     const statePath = await this.authManager.getValidStatePath();
 
     if (statePath) {
       log.success(`  📂 Found auth state: ${statePath}`);
-      log.info("  💡 Will load cookies into persistent profile");
+      log.info("  💡 Will sync saved cookies into persistent profile if needed");
     } else {
       log.warning("  🆕 No saved auth - fresh persistent profile");
       log.info("  💡 First login will save auth to persistent profile");
@@ -163,18 +237,12 @@ export class SharedContextManager {
 
     // Build launch options for persistent context
     // NOTE: userDataDir is passed as first parameter, NOT in options!
+    // Patchright's launchPersistentContext() ignores Playwright's storageState option,
+    // so saved state.json cookies are injected via syncSavedStateIfNeeded() right after launch.
     const baseLaunchOptions = {
       headless: shouldBeHeadless,
       viewport: config.viewport,
-      locale: "en-US",
-      timezoneId: "Europe/Berlin",
-      // ✅ CRITICAL FIX: Pass storageState directly at launch!
-      // This is the PROPER way to handle session cookies (Playwright bug workaround)
-      // Benefits:
-      // - Session cookies persist correctly
-      // - No need for addCookies() workarounds
-      // - Chrome loads everything automatically
-      ...(statePath && { storageState: statePath }),
+      ...resolveBrowserLocaleOptions(),
       args: [
         "--disable-blink-features=AutomationControlled",
         "--disable-dev-shm-usage",
@@ -259,29 +327,76 @@ export class SharedContextManager {
         this.globalContext = null;
         this.contextCreatedAt = null;
         this.currentHeadlessMode = null;
+        this.lastLoadedStateMtimeMs = null;
+        this.loadedStateInCurrentContext = false;
       });
     } catch {
       /* close listener is optional — patchright versions differ */
     }
 
-    // Validate cookies if we loaded state
-    if (statePath) {
-      try {
-        if (await this.authManager.validateCookiesExpiry(this.globalContext)) {
-          log.success("  ✅ Authentication state loaded successfully");
-          log.success("  🎯 Session cookies persisted correctly!");
-        } else {
-          log.warning("  ⚠️  Cookies expired - will need re-login");
-        }
-      } catch (error) {
-        log.warning(`  ⚠️  Could not validate auth state: ${error}`);
-      }
-    }
+    // Explicitly inject saved state.json cookies into the persistent context when needed
+    await this.syncSavedStateIfNeeded(this.globalContext, false, statePath);
 
     log.success("✅ Persistent context ready!");
     log.dim(`  Context ID: ${this.getContextId()}`);
     log.dim(`  Chrome Profile: ${CONFIG.chromeProfileDir}`);
     log.success("  🎯 Fingerprint: PERSISTENT (same across restarts!)");
+  }
+
+  private async syncSavedStateIfNeeded(
+    context: BrowserContext,
+    isReuse: boolean,
+    preResolvedStatePath?: string | null
+  ): Promise<void> {
+    const statePath =
+      preResolvedStatePath !== undefined
+        ? preResolvedStatePath
+        : await this.authManager.getValidStatePath();
+    if (!statePath) {
+      return;
+    }
+
+    let stateMtimeMs: number;
+    try {
+      stateMtimeMs = (await fs.promises.stat(statePath)).mtimeMs;
+    } catch {
+      return;
+    }
+
+    const hasValidContextCookies = await this.authManager.validateCookiesExpiry(context);
+    const cookiesDbMtimeMs = isReuse
+      ? null
+      : await getProfileCookiesMtimeMs(this.currentProfileDir || CONFIG.chromeProfileDir);
+
+    if (
+      !shouldSyncSavedState({
+        stateMtimeMs,
+        cookiesDbMtimeMs,
+        lastLoadedStateMtimeMs: this.lastLoadedStateMtimeMs,
+        contextCreatedAtMs: this.contextCreatedAt,
+        hasValidContextCookies,
+        isReuse,
+      })
+    ) {
+      return;
+    }
+
+    const loaded = await this.authManager.loadAuthState(context, statePath);
+    if (!loaded) {
+      return;
+    }
+
+    this.markStateSynced(stateMtimeMs);
+
+    try {
+      if (await this.authManager.validateCookiesExpiry(context)) {
+        log.success("  ✅ Authentication state loaded successfully into persistent context");
+      } else {
+        log.warning("  ⚠️  Cookies expired - will need re-login");
+      }
+    } catch (error) {
+      log.warning(`  ⚠️  Could not validate auth state: ${error}`);
+    }
   }
 
   /**
@@ -299,6 +414,8 @@ export class SharedContextManager {
         this.globalContext = null;
         this.contextCreatedAt = null;
         this.currentHeadlessMode = null;
+        this.lastLoadedStateMtimeMs = null;
+        this.loadedStateInCurrentContext = false;
         log.success("✅ Persistent context closed");
         log.success(`  💾 Profile saved: ${this.currentProfileDir || CONFIG.chromeProfileDir}`);
       } catch (error) {

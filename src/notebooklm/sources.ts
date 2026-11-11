@@ -401,6 +401,12 @@ async function readDialogError(page: Page): Promise<string | null> {
 export async function listSources(page: Page): Promise<string[]> {
   try {
     const elements = page.locator(Selectors.sources.sourceContainer);
+    if ((await elements.count()) === 0) {
+      await elements
+        .first()
+        .waitFor({ state: "attached", timeout: 3_000 })
+        .catch(() => undefined);
+    }
     const count = await elements.count();
     const titles: string[] = [];
     for (let i = 0; i < count; i++) {
