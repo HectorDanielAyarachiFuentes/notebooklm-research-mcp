@@ -309,10 +309,33 @@ export interface BrowserOptions {
 }
 
 /**
+ * Resolve explicit browser visibility override from per-call options.
+ * Returns `true` to force visible browser, `false` to force headless, or `undefined` to inherit config.
+ */
+export function resolveOverrideHeadless(
+  options?: BrowserOptions,
+  legacyShowBrowser?: boolean
+): boolean | undefined {
+  if (options?.headless !== undefined) {
+    return !options.headless;
+  }
+  if (options?.show !== undefined) {
+    return options.show;
+  }
+  if (legacyShowBrowser !== undefined) {
+    return legacyShowBrowser;
+  }
+  return undefined;
+}
+
+/**
  * Apply browser options to CONFIG (returns modified copy, doesn't mutate global CONFIG)
  */
 export function applyBrowserOptions(options?: BrowserOptions, legacyShowBrowser?: boolean): Config {
-  const config = { ...CONFIG };
+  const config: Config = {
+    ...CONFIG,
+    viewport: { ...CONFIG.viewport },
+  };
 
   // Handle legacy show_browser parameter
   if (legacyShowBrowser !== undefined) {

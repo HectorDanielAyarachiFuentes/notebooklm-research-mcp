@@ -14,7 +14,7 @@
 
 import type { BrowserContext } from "patchright";
 import { chromium } from "patchright";
-import { CONFIG } from "../config.js";
+import { CONFIG, type Config } from "../config.js";
 import { log } from "../utils/logger.js";
 import type { AuthManager } from "../auth/auth-manager.js";
 import {
@@ -67,17 +67,20 @@ export class SharedContextManager {
    *
    * @param overrideHeadless Optional override for headless mode (true = show browser)
    */
-  async getOrCreateContext(overrideHeadless?: boolean): Promise<BrowserContext> {
+  async getOrCreateContext(
+    overrideHeadless?: boolean,
+    config: Config = CONFIG
+  ): Promise<BrowserContext> {
     // Check if headless mode needs to be changed (e.g., show_browser=true)
     // If yes, close the browser so it gets recreated with the new mode
-    if (this.needsHeadlessModeChange(overrideHeadless)) {
+    if (this.needsHeadlessModeChange(overrideHeadless, config)) {
       log.warning("🔄 Headless mode change detected - recreating browser context...");
       await this.closeContext();
     }
 
     if (await this.needsRecreation()) {
       log.warning("🔄 Creating/Loading persistent context...");
-      await this.recreateContext(overrideHeadless);
+      await this.recreateContext(overrideHeadless, config);
     } else {
       log.success("♻️  Reusing existing persistent context");
     }
@@ -126,7 +129,10 @@ export class SharedContextManager {
    *
    * @param overrideHeadless Optional override for headless mode (true = show browser)
    */
-  private async recreateContext(overrideHeadless?: boolean): Promise<void> {
+  private async recreateContext(
+    overrideHeadless?: boolean,
+    config: Config = CONFIG
+  ): Promise<void> {
     // Close old context if exists
     if (this.globalContext) {
       try {
@@ -148,8 +154,8 @@ export class SharedContextManager {
       log.info("  💡 First login will save auth to persistent profile");
     }
 
-    // Determine headless mode: use override if provided, otherwise use CONFIG
-    const shouldBeHeadless = overrideHeadless !== undefined ? !overrideHeadless : CONFIG.headless;
+    // Determine headless mode: use override if provided, otherwise use config
+    const shouldBeHeadless = overrideHeadless !== undefined ? !overrideHeadless : config.headless;
 
     if (overrideHeadless !== undefined) {
       log.info(`  Browser visibility override: ${overrideHeadless ? "VISIBLE" : "HEADLESS"}`);
@@ -159,7 +165,7 @@ export class SharedContextManager {
     // NOTE: userDataDir is passed as first parameter, NOT in options!
     const baseLaunchOptions = {
       headless: shouldBeHeadless,
-      viewport: CONFIG.viewport,
+      viewport: config.viewport,
       locale: "en-US",
       timezoneId: "Europe/Berlin",
       // ✅ CRITICAL FIX: Pass storageState directly at launch!
@@ -470,7 +476,7 @@ export class SharedContextManager {
    * @param overrideHeadless - Optional override for headless mode (true = show browser)
    * @returns boolean - true if context needs to be recreated with new mode
    */
-  needsHeadlessModeChange(overrideHeadless?: boolean): boolean {
+  needsHeadlessModeChange(overrideHeadless?: boolean, config: Config = CONFIG): boolean {
     // No context exists yet = will be created with correct mode anyway
     if (this.currentHeadlessMode === null) {
       return false;
@@ -478,8 +484,8 @@ export class SharedContextManager {
 
     // Calculate target headless mode
     // If override is specified, use it (!overrideHeadless because true = show browser = headless false)
-    // Otherwise, use CONFIG.headless (which may have been temporarily modified by browser_options)
-    const targetHeadless = overrideHeadless !== undefined ? !overrideHeadless : CONFIG.headless;
+    // Otherwise, use per-call effective config (without mutating global CONFIG)
+    const targetHeadless = overrideHeadless !== undefined ? !overrideHeadless : config.headless;
 
     // Compare with current mode
     const needsChange = this.currentHeadlessMode !== targetHeadless;

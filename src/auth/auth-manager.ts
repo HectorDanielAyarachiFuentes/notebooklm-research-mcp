@@ -16,7 +16,7 @@ import type { BrowserContext, ElementHandle, Page } from "patchright";
 import fs from "fs/promises";
 import { existsSync } from "fs";
 import path from "path";
-import { CONFIG, NOTEBOOKLM_AUTH_URL } from "../config.js";
+import { CONFIG, NOTEBOOKLM_AUTH_URL, type Config } from "../config.js";
 import { log } from "../utils/logger.js";
 import {
   getPreferredChannel,
@@ -370,13 +370,14 @@ export class AuthManager {
     context: BrowserContext,
     page: Page,
     email: string,
-    password: string
+    password: string,
+    config: Config = CONFIG
   ): Promise<boolean> {
     const maskedEmail = this.maskEmail(email);
     log.warning(`🔁 Attempting automatic login for ${maskedEmail}...`);
 
     // Log browser visibility
-    if (!CONFIG.headless) {
+    if (!config.headless) {
       log.info("  👁️  Browser is VISIBLE for debugging");
     } else {
       log.info("  🙈 Browser is HEADLESS (invisible)");
@@ -387,19 +388,19 @@ export class AuthManager {
     try {
       await page.goto(NOTEBOOKLM_AUTH_URL, {
         waitUntil: "domcontentloaded",
-        timeout: CONFIG.browserTimeout,
+        timeout: config.browserTimeout,
       });
       log.success(`  ✅ Page loaded: ${page.url().slice(0, 80)}...`);
     } catch {
       log.warning(`  ⚠️  Page load timeout (continuing anyway)`);
     }
 
-    const deadline = Date.now() + CONFIG.autoLoginTimeoutMs;
-    log.info(`  ⏰ Auto-login timeout: ${CONFIG.autoLoginTimeoutMs / 1000}s`);
+    const deadline = Date.now() + config.autoLoginTimeoutMs;
+    log.info(`  ⏰ Auto-login timeout: ${config.autoLoginTimeoutMs / 1000}s`);
 
     // Already on NotebookLM?
     log.info("  🔍 Checking if already authenticated...");
-    if (await this.waitForNotebook(page, CONFIG.autoLoginTimeoutMs)) {
+    if (await this.waitForNotebook(page, config.autoLoginTimeoutMs)) {
       log.success("✅ Already authenticated");
       await this.saveBrowserState(context, page);
       return true;
@@ -409,9 +410,9 @@ export class AuthManager {
 
     // Handle possible account chooser
     log.info("  🔍 Checking for account chooser...");
-    if (await this.handleAccountChooser(page, email)) {
+    if (await this.handleAccountChooser(page, email, config)) {
       log.success("  ✅ Account selected from chooser");
-      if (await this.waitForNotebook(page, CONFIG.autoLoginTimeoutMs)) {
+      if (await this.waitForNotebook(page, config.autoLoginTimeoutMs)) {
         log.success("✅ Automatic login successful");
         await this.saveBrowserState(context, page);
         return true;
@@ -420,8 +421,8 @@ export class AuthManager {
 
     // Email step
     log.info("  📧 Entering email address...");
-    if (!(await this.fillIdentifier(page, email))) {
-      if (await this.waitForNotebook(page, CONFIG.autoLoginTimeoutMs)) {
+    if (!(await this.fillIdentifier(page, email, config))) {
+      if (await this.waitForNotebook(page, config.autoLoginTimeoutMs)) {
         log.success("✅ Automatic login successful");
         await this.saveBrowserState(context, page);
         return true;
@@ -433,7 +434,7 @@ export class AuthManager {
     let waitAttempts = 0;
     log.warning("  ⏳ Waiting for password page to load...");
 
-    while (Date.now() < deadline && !(await this.fillPassword(page, password))) {
+    while (Date.now() < deadline && !(await this.fillPassword(page, password, config))) {
       waitAttempts++;
 
       // Log every 10 seconds (20 attempts * 0.5s)
@@ -467,7 +468,7 @@ export class AuthManager {
 
     // Take screenshot for debugging
     try {
-      const screenshotPath = path.join(CONFIG.dataDir, `login_failed_${Date.now()}.png`);
+      const screenshotPath = path.join(config.dataDir, `login_failed_${Date.now()}.png`);
       await page.screenshot({ path: screenshotPath });
       log.info(`  📸 Screenshot saved: ${screenshotPath}`);
     } catch (error) {
@@ -567,7 +568,11 @@ export class AuthManager {
   /**
    * Handle possible account chooser
    */
-  private async handleAccountChooser(page: Page, email: string): Promise<boolean> {
+  private async handleAccountChooser(
+    page: Page,
+    email: string,
+    config: Config = CONFIG
+  ): Promise<boolean> {
     try {
       const chooser = await page.$$("div[data-identifier], li[data-identifier]");
 
@@ -576,19 +581,19 @@ export class AuthManager {
           const identifier = (await item.getAttribute("data-identifier"))?.toLowerCase() || "";
           if (identifier === email.toLowerCase()) {
             await item.click();
-            await randomDelay(150, 320);
+            await randomDelay(150, 320, config);
             await page.waitForTimeout(500);
             return true;
           }
         }
 
         // Click "Use another account"
-        await this.clickText(page, [
-          "Use another account",
-          "Weiteres Konto hinzufügen",
-          "Anderes Konto verwenden",
-        ]);
-        await randomDelay(150, 320);
+        await this.clickText(
+          page,
+          ["Use another account", "Weiteres Konto hinzufügen", "Anderes Konto verwenden"],
+          config
+        );
+        await randomDelay(150, 320, config);
         return false;
       }
 
@@ -601,7 +606,11 @@ export class AuthManager {
   /**
    * Fill email identifier field with human-like typing
    */
-  private async fillIdentifier(page: Page, email: string): Promise<boolean> {
+  private async fillIdentifier(
+    page: Page,
+    email: string,
+    config: Config = CONFIG
+  ): Promise<boolean> {
     log.info("    📧 Looking for email field...");
 
     const emailSelectors = [
@@ -650,8 +659,8 @@ export class AuthManager {
       if (box) {
         const targetX = box.x + box.width / 2;
         const targetY = box.y + box.height / 2;
-        await randomMouseMovement(page, targetX, targetY);
-        await randomDelay(200, 500);
+        await randomMouseMovement(page, targetX, targetY, undefined, config);
+        await randomDelay(200, 500, config);
       }
     } catch {
       // Ignore errors
@@ -659,7 +668,7 @@ export class AuthManager {
 
     // Click to focus
     try {
-      await realisticClick(page, emailSelector, false);
+      await realisticClick(page, emailSelector, false, config);
     } catch (error) {
       log.warning(`    ⚠️  Could not click email field (${error}); trying direct focus`);
       try {
@@ -674,9 +683,9 @@ export class AuthManager {
     log.info(`    ⌨️  Typing email: ${this.maskEmail(email)}`);
     try {
       const wpm =
-        CONFIG.typingWpmMin +
-        Math.floor(Math.random() * (CONFIG.typingWpmMax - CONFIG.typingWpmMin + 1));
-      await humanType(page, emailSelector, email, { wpm, withTypos: false });
+        config.typingWpmMin +
+        Math.floor(Math.random() * (config.typingWpmMax - config.typingWpmMin + 1));
+      await humanType(page, emailSelector, email, { wpm, withTypos: false, config });
       log.success("    ✅ Email typed successfully");
     } catch (error) {
       log.error(`    ❌ Typing failed: ${error}`);
@@ -689,7 +698,7 @@ export class AuthManager {
     }
 
     // Human "thinking" pause before clicking Next
-    await randomDelay(400, 1200);
+    await randomDelay(400, 1200, config);
 
     // Click Next button
     log.info("    🔘 Looking for Next button...");
@@ -705,7 +714,7 @@ export class AuthManager {
       try {
         const button = await page.locator(selector);
         if ((await button.count()) > 0) {
-          await realisticClick(page, selector, true);
+          await realisticClick(page, selector, true, config);
           log.success(`    ✅ Next button clicked: ${selector}`);
           nextClicked = true;
           break;
@@ -721,7 +730,7 @@ export class AuthManager {
     }
 
     // Variable delay
-    await randomDelay(800, 1500);
+    await randomDelay(800, 1500, config);
     log.success("    ✅ Email step complete");
     return true;
   }
@@ -729,7 +738,11 @@ export class AuthManager {
   /**
    * Fill password field with human-like typing
    */
-  private async fillPassword(page: Page, password: string): Promise<boolean> {
+  private async fillPassword(
+    page: Page,
+    password: string,
+    config: Config = CONFIG
+  ): Promise<boolean> {
     log.info("    🔐 Looking for password field...");
 
     const passwordSelectors = ["input[name='Passwd']", "input[type='password']"];
@@ -761,8 +774,8 @@ export class AuthManager {
       if (box) {
         const targetX = box.x + box.width / 2;
         const targetY = box.y + box.height / 2;
-        await randomMouseMovement(page, targetX, targetY);
-        await randomDelay(300, 700);
+        await randomMouseMovement(page, targetX, targetY, undefined, config);
+        await randomDelay(300, 700, config);
       }
     } catch {
       // Ignore errors
@@ -770,17 +783,17 @@ export class AuthManager {
 
     // Click to focus
     if (passwordSelector) {
-      await realisticClick(page, passwordSelector, false);
+      await realisticClick(page, passwordSelector, false, config);
     }
 
     // ✅ FASTER: Programmer typing speed (90-120 WPM from config)
     log.info("    ⌨️  Typing password...");
     try {
       const wpm =
-        CONFIG.typingWpmMin +
-        Math.floor(Math.random() * (CONFIG.typingWpmMax - CONFIG.typingWpmMin + 1));
+        config.typingWpmMin +
+        Math.floor(Math.random() * (config.typingWpmMax - config.typingWpmMin + 1));
       if (passwordSelector) {
-        await humanType(page, passwordSelector, password, { wpm, withTypos: false });
+        await humanType(page, passwordSelector, password, { wpm, withTypos: false, config });
       }
       log.success("    ✅ Password typed successfully");
     } catch (error) {
@@ -789,7 +802,7 @@ export class AuthManager {
     }
 
     // Human "review" pause before submitting password
-    await randomDelay(300, 1000);
+    await randomDelay(300, 1000, config);
 
     // Click Next button
     log.info("    🔘 Looking for Next button...");
@@ -805,7 +818,7 @@ export class AuthManager {
       try {
         const button = await page.locator(selector);
         if ((await button.count()) > 0) {
-          await realisticClick(page, selector, true);
+          await realisticClick(page, selector, true, config);
           log.success(`    ✅ Next button clicked: ${selector}`);
           pwdNextClicked = true;
           break;
@@ -821,7 +834,7 @@ export class AuthManager {
     }
 
     // Variable delay
-    await randomDelay(800, 1500);
+    await randomDelay(800, 1500, config);
     log.success("    ✅ Password step complete");
     return true;
   }
@@ -829,14 +842,14 @@ export class AuthManager {
   /**
    * Click text element
    */
-  private async clickText(page: Page, texts: string[]): Promise<boolean> {
+  private async clickText(page: Page, texts: string[], config: Config = CONFIG): Promise<boolean> {
     for (const text of texts) {
       const selector = `text="${text}"`;
       try {
         const locator = page.locator(selector);
         if ((await locator.count()) > 0) {
-          await realisticClick(page, selector, true);
-          await randomDelay(120, 260);
+          await realisticClick(page, selector, true, config);
+          await randomDelay(120, 260, config);
           return true;
         }
       } catch {
@@ -907,7 +920,8 @@ export class AuthManager {
    */
   async performSetup(
     sendProgress?: ProgressCallback,
-    overrideHeadless?: boolean
+    overrideHeadless?: boolean,
+    config: Config = CONFIG
   ): Promise<boolean> {
     const { chromium } = await import("patchright");
 
@@ -922,7 +936,7 @@ export class AuthManager {
       await this.clearAllAuthData();
 
       log.info("🚀 Launching persistent browser for interactive setup...");
-      log.info(`  📍 Profile: ${CONFIG.chromeProfileDir}`);
+      log.info(`  📍 Profile: ${config.chromeProfileDir}`);
       await sendProgress?.("Launching persistent browser...", 2, 10);
 
       // ✅ CRITICAL FIX: Use launchPersistentContext (same as runtime!)
@@ -930,7 +944,7 @@ export class AuthManager {
       // fallback shared with the runtime context manager (issues #13, #19).
       const baseLaunchOptions = {
         headless: !shouldShowBrowser,
-        viewport: CONFIG.viewport,
+        viewport: config.viewport,
         locale: "en-US",
         timezoneId: "Europe/Berlin",
         args: [
@@ -944,14 +958,14 @@ export class AuthManager {
       let context: BrowserContext;
       try {
         context = await chromium.launchPersistentContext(
-          CONFIG.chromeProfileDir,
+          config.chromeProfileDir,
           withChannel(baseLaunchOptions, preferred)
         );
       } catch (err) {
         if (preferred === "chrome" && isChannelFailure(err)) {
           log.warning("⚠️  System Chrome failed to launch — falling back to bundled Chromium.");
           context = await chromium.launchPersistentContext(
-            CONFIG.chromeProfileDir,
+            config.chromeProfileDir,
             withChannel(baseLaunchOptions, "chromium")
           );
         } else {
@@ -973,7 +987,7 @@ export class AuthManager {
         await this.saveBrowserState(context, page);
         log.success("✅ Setup complete - authentication saved to:");
         log.success(`  📄 State file: ${this.stateFilePath}`);
-        log.success(`  📁 Chrome profile: ${CONFIG.chromeProfileDir}`);
+        log.success(`  📁 Chrome profile: ${config.chromeProfileDir}`);
         log.info("💡 Session cookies will now persist across restarts!");
       }
 

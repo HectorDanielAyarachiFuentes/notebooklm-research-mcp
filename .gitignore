@@ -49,3 +49,6 @@ venv/
 .playwright-mcp/
 tmp/
 studio-*.png
+
+# GitNexus local index
+.gitnexus/

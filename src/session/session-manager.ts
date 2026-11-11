@@ -15,7 +15,7 @@
 import type { AuthManager } from "../auth/auth-manager.js";
 import { BrowserSession } from "./browser-session.js";
 import { SharedContextManager } from "./shared-context-manager.js";
-import { CONFIG } from "../config.js";
+import { CONFIG, type Config } from "../config.js";
 import { log } from "../utils/logger.js";
 import type { SessionInfo } from "../types.js";
 import { randomBytes } from "crypto";
@@ -66,10 +66,11 @@ export class SessionManager {
   async getOrCreateSession(
     sessionId?: string,
     notebookUrl?: string,
-    overrideHeadless?: boolean
+    overrideHeadless?: boolean,
+    effectiveConfig: Config = CONFIG
   ): Promise<BrowserSession> {
     // Determine target notebook URL
-    const targetUrl = (notebookUrl || CONFIG.notebookUrl || "").trim();
+    const targetUrl = (notebookUrl || effectiveConfig.notebookUrl || "").trim();
     if (!targetUrl) {
       throw new Error("Notebook URL is required to create a session");
     }
@@ -85,7 +86,7 @@ export class SessionManager {
 
     // Check if browser visibility mode needs to change
     if (overrideHeadless !== undefined) {
-      if (this.sharedContextManager.needsHeadlessModeChange(overrideHeadless)) {
+      if (this.sharedContextManager.needsHeadlessModeChange(overrideHeadless, effectiveConfig)) {
         log.warning(
           `🔄 Browser visibility changed - closing all sessions to recreate browser context...`
         );
@@ -132,16 +133,17 @@ export class SessionManager {
     }
     try {
       // Ensure the shared context exists (ONE fingerprint for all sessions!)
-      await this.sharedContextManager.getOrCreateContext(overrideHeadless);
+      await this.sharedContextManager.getOrCreateContext(overrideHeadless, effectiveConfig);
 
       // Create and initialize session
       const session = new BrowserSession(
         sessionId,
         this.sharedContextManager,
         this.authManager,
-        targetUrl
+        targetUrl,
+        effectiveConfig
       );
-      await session.init();
+      await session.init(effectiveConfig);
 
       this.sessions.set(sessionId, session);
       log.success(

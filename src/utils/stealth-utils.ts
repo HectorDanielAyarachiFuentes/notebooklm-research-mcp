@@ -12,7 +12,20 @@
  */
 
 import type { Page } from "patchright";
-import { CONFIG } from "../config.js";
+import { CONFIG, type Config } from "../config.js";
+
+export type StealthConfig = Pick<
+  Config,
+  | "stealthEnabled"
+  | "stealthRandomDelays"
+  | "stealthHumanTyping"
+  | "stealthMouseMovements"
+  | "typingWpmMin"
+  | "typingWpmMax"
+  | "minDelayMs"
+  | "maxDelayMs"
+  | "viewport"
+>;
 
 // ============================================================================
 // Helper Functions
@@ -69,11 +82,15 @@ export function gaussian(mean: number, stdDev: number): number {
  * @param minMs Minimum delay in milliseconds (default: from CONFIG)
  * @param maxMs Maximum delay in milliseconds (default: from CONFIG)
  */
-export async function randomDelay(minMs?: number, maxMs?: number): Promise<void> {
-  minMs = minMs ?? CONFIG.minDelayMs;
-  maxMs = maxMs ?? CONFIG.maxDelayMs;
+export async function randomDelay(
+  minMs?: number,
+  maxMs?: number,
+  config: StealthConfig = CONFIG
+): Promise<void> {
+  minMs = minMs ?? config.minDelayMs;
+  maxMs = maxMs ?? config.maxDelayMs;
 
-  if (!CONFIG.stealthEnabled || !CONFIG.stealthRandomDelays) {
+  if (!config.stealthEnabled || !config.stealthRandomDelays) {
     // Fixed delay (average)
     const target = minMs === maxMs ? minMs : (minMs + maxMs) / 2;
     if (target > 0) {
@@ -109,7 +126,7 @@ export async function randomDelay(minMs?: number, maxMs?: number): Promise<void>
  * @param page Playwright page instance
  * @param selector CSS selector of input element
  * @param text Text to type
- * @param options Typing options (wpm, withTypos)
+ * @param options Typing options (wpm, withTypos, config)
  */
 export async function humanType(
   page: Page,
@@ -118,15 +135,17 @@ export async function humanType(
   options: {
     wpm?: number;
     withTypos?: boolean;
+    config?: StealthConfig;
   } = {}
 ): Promise<void> {
-  if (!CONFIG.stealthEnabled || !CONFIG.stealthHumanTyping) {
+  const config = options.config ?? CONFIG;
+  if (!config.stealthEnabled || !config.stealthHumanTyping) {
     // Fast typing without stealth
     await page.fill(selector, text);
     return;
   }
 
-  const wpm = options.wpm ?? randomInt(CONFIG.typingWpmMin, CONFIG.typingWpmMax);
+  const wpm = options.wpm ?? randomInt(config.typingWpmMin, config.typingWpmMax);
   const withTypos = options.withTypos ?? true;
 
   // Calculate average delay per character (in ms)
@@ -137,11 +156,11 @@ export async function humanType(
 
   // Clear existing text first
   await page.fill(selector, "");
-  await randomDelay(30, 80);
+  await randomDelay(30, 80, config);
 
   // Click to focus
   await page.click(selector);
-  await randomDelay(20, 60);
+  await randomDelay(20, 60, config);
 
   // Type each character
   let currentText = "";
@@ -164,7 +183,7 @@ export async function humanType(
       // Backspace
       currentText = currentText.slice(0, -1);
       await page.fill(selector, currentText);
-      await randomDelay(20, 60);
+      await randomDelay(20, 60, config);
     }
 
     // Type correct character
@@ -190,7 +209,7 @@ export async function humanType(
   }
 
   // Small delay after finishing typing
-  await randomDelay(50, 120);
+  await randomDelay(50, 120, config);
 }
 
 // ============================================================================
@@ -210,13 +229,14 @@ export async function randomMouseMovement(
   page: Page,
   targetX?: number,
   targetY?: number,
-  steps?: number
+  steps?: number,
+  config: StealthConfig = CONFIG
 ): Promise<void> {
-  if (!CONFIG.stealthEnabled || !CONFIG.stealthMouseMovements) {
+  if (!config.stealthEnabled || !config.stealthMouseMovements) {
     return;
   }
 
-  const viewport = page.viewportSize() || CONFIG.viewport;
+  const viewport = page.viewportSize() || config.viewport;
 
   targetX = targetX ?? randomInt(100, viewport.width - 100);
   targetY = targetY ?? randomInt(100, viewport.height - 100);
@@ -267,9 +287,10 @@ export async function randomMouseMovement(
 export async function realisticClick(
   page: Page,
   selector: string,
-  withMouseMovement: boolean = true
+  withMouseMovement: boolean = true,
+  config: StealthConfig = CONFIG
 ): Promise<void> {
-  if (!CONFIG.stealthEnabled || !CONFIG.stealthMouseMovements) {
+  if (!config.stealthEnabled || !config.stealthMouseMovements) {
     await page.click(selector);
     return;
   }
@@ -287,19 +308,19 @@ export async function realisticClick(
         const targetX = box.x + box.width / 2 + offsetX;
         const targetY = box.y + box.height / 2 + offsetY;
 
-        await randomMouseMovement(page, targetX, targetY);
+        await randomMouseMovement(page, targetX, targetY, undefined, config);
       }
     }
   }
 
   // Small pause before clicking
-  await randomDelay(100, 300);
+  await randomDelay(100, 300, config);
 
   // Click
   await page.click(selector);
 
   // Small pause after clicking
-  await randomDelay(150, 400);
+  await randomDelay(150, 400, config);
 }
 
 // ============================================================================
@@ -317,7 +338,8 @@ export async function realisticClick(
 export async function smoothScroll(
   page: Page,
   amount?: number,
-  direction: "up" | "down" = "down"
+  direction: "up" | "down" = "down",
+  config: StealthConfig = CONFIG
 ): Promise<void> {
   amount = amount ?? randomInt(100, 400);
   amount = Math.abs(amount);
@@ -325,7 +347,7 @@ export async function smoothScroll(
     amount = -amount;
   }
 
-  if (!CONFIG.stealthEnabled || !CONFIG.stealthMouseMovements) {
+  if (!config.stealthEnabled || !config.stealthMouseMovements) {
     await page.evaluate((scrollAmount) => {
       window.scrollBy({ top: scrollAmount, behavior: "auto" });
     }, amount);
@@ -344,129 +366,7 @@ export async function smoothScroll(
   }
 
   // Pause after scrolling (humans look at content)
-  await randomDelay(300, 800);
-}
-
-// ============================================================================
-// Reading Simulation
-// ============================================================================
-
-/**
- * Pause as if reading text, based on length
- * Calculates realistic reading time based on text length and WPM
- *
- * @param textLength Number of characters to "read"
- * @param wpm Reading speed in words per minute (default: random 200-250)
- */
-export async function readingPause(textLength: number, wpm?: number): Promise<void> {
-  if (!CONFIG.stealthEnabled || !CONFIG.stealthRandomDelays) {
-    return;
-  }
-
-  wpm = wpm ?? randomInt(200, 250);
-
-  // Calculate reading time
-  // Average word length ~5 characters
-  const wordCount = textLength / 5;
-  const minutes = wordCount / wpm;
-  let seconds = minutes * 60;
-
-  // Add some randomness (humans don't read at constant speed)
-  seconds *= randomFloat(0.8, 1.2);
-
-  // Cap at reasonable maximum (3 seconds)
-  seconds = Math.min(seconds, 3.0);
-
-  await sleep(seconds * 1000);
-}
-
-// ============================================================================
-// Random Mouse Jitter
-// ============================================================================
-
-/**
- * Add small random mouse movements to simulate natural fidgeting
- *
- * @param page Playwright page instance
- * @param iterations Number of small movements (default: 3)
- */
-export async function randomMouseJitter(page: Page, iterations: number = 3): Promise<void> {
-  if (!CONFIG.stealthEnabled || !CONFIG.stealthMouseMovements) {
-    return;
-  }
-
-  const viewport = page.viewportSize() || CONFIG.viewport;
-
-  for (let i = 0; i < iterations; i++) {
-    const targetX = randomInt(0, viewport.width);
-    const targetY = randomInt(0, viewport.height);
-    await page.mouse.move(targetX, targetY, { steps: randomInt(2, 4) });
-    await sleep(randomFloat(100, 300));
-  }
-}
-
-// ============================================================================
-// Hover Element
-// ============================================================================
-
-/**
- * Hover over an element with realistic mouse movement
- *
- * @param page Playwright page instance
- * @param selector CSS selector of element to hover
- */
-export async function hoverElement(page: Page, selector: string): Promise<void> {
-  if (!CONFIG.stealthEnabled || !CONFIG.stealthMouseMovements) {
-    await page.hover(selector);
-    return;
-  }
-
-  const element = await page.$(selector);
-  if (element) {
-    const box = await element.boundingBox();
-    if (box) {
-      // Move to center of element
-      const targetX = box.x + box.width / 2;
-      const targetY = box.y + box.height / 2;
-
-      await randomMouseMovement(page, targetX, targetY);
-      await page.hover(selector);
-      await randomDelay(200, 500);
-    }
-  }
-}
-
-// ============================================================================
-// Simulate Reading Page
-// ============================================================================
-
-/**
- * Simulate reading a page with scrolling and pauses
- * Adds realistic behavior of scrolling and reading content
- *
- * @param page Playwright page instance
- */
-export async function simulateReadingPage(page: Page): Promise<void> {
-  if (!CONFIG.stealthEnabled || !CONFIG.stealthRandomDelays) {
-    return;
-  }
-
-  // Random number of scroll actions
-  const scrollCount = randomInt(1, 3);
-
-  for (let i = 0; i < scrollCount; i++) {
-    // Scroll down
-    await smoothScroll(page, undefined, "down");
-
-    // "Read" the visible content
-    await randomDelay(800, 1500);
-
-    // Sometimes scroll up a bit (humans do this)
-    if (Math.random() < 0.3) {
-      await smoothScroll(page, randomInt(50, 150), "up");
-      await randomDelay(400, 800);
-    }
-  }
+  await randomDelay(300, 800, config);
 }
 
 // ============================================================================
@@ -484,8 +384,4 @@ export default {
   randomMouseMovement,
   realisticClick,
   smoothScroll,
-  readingPause,
-  randomMouseJitter,
-  hoverElement,
-  simulateReadingPage,
 };

@@ -40,7 +40,7 @@ import {
   type AudioGenerationResult,
   type DownloadAudioResult,
 } from "../notebooklm/audio.js";
-import { CONFIG } from "../config.js";
+import { CONFIG, type Config } from "../config.js";
 import { log } from "../utils/logger.js";
 import type { SessionInfo, ProgressCallback } from "../types.js";
 import { RateLimitError } from "../errors.js";
@@ -61,6 +61,7 @@ export class BrowserSession {
   private context!: BrowserContext;
   private sharedContextManager: SharedContextManager;
   private authManager: AuthManager;
+  private config: Config;
   private page: Page | null = null;
   private initialized: boolean = false;
 
@@ -68,12 +69,14 @@ export class BrowserSession {
     sessionId: string,
     sharedContextManager: SharedContextManager,
     authManager: AuthManager,
-    notebookUrl: string
+    notebookUrl: string,
+    config: Config = CONFIG
   ) {
     this.sessionId = sessionId;
     this.sharedContextManager = sharedContextManager;
     this.authManager = authManager;
     this.notebookUrl = notebookUrl;
+    this.config = config;
     this.createdAt = Date.now();
     this.lastActivity = Date.now();
     this.messageCount = 0;
@@ -84,7 +87,7 @@ export class BrowserSession {
   /**
    * Initialize the session by creating a page and navigating to the notebook
    */
-  async init(): Promise<void> {
+  async init(config: Config = this.config): Promise<void> {
     if (this.initialized) {
       log.warning(`⚠️  Session ${this.sessionId} already initialized`);
       return;
@@ -94,7 +97,7 @@ export class BrowserSession {
 
     try {
       // Ensure a valid shared context
-      this.context = await this.sharedContextManager.getOrCreateContext();
+      this.context = await this.sharedContextManager.getOrCreateContext(undefined, config);
 
       // Create new page (tab) in the shared context (with auto-recovery)
       try {
@@ -105,7 +108,7 @@ export class BrowserSession {
           /has been closed|Target .* closed|Browser has been closed|Context .* closed/i.test(msg)
         ) {
           log.warning("  ♻️  Context was closed. Recreating and retrying newPage...");
-          this.context = await this.sharedContextManager.getOrCreateContext();
+          this.context = await this.sharedContextManager.getOrCreateContext(undefined, config);
           this.page = await this.context.newPage();
         } else {
           throw e;
@@ -117,18 +120,18 @@ export class BrowserSession {
       log.info(`  🌐 Navigating to: ${this.notebookUrl}`);
       await this.page.goto(this.notebookUrl, {
         waitUntil: "domcontentloaded",
-        timeout: CONFIG.browserTimeout,
+        timeout: config.browserTimeout,
       });
 
       // Wait for page to stabilize
-      await randomDelay(2000, 3000);
+      await randomDelay(2000, 3000, config);
 
       // Check if we need to login
       const isAuthenticated = await this.authManager.validateCookiesExpiry(this.context);
 
       if (!isAuthenticated) {
         log.warning(`  🔑 Session ${this.sessionId} needs authentication`);
-        const loginSuccess = await this.ensureAuthenticated();
+        const loginSuccess = await this.ensureAuthenticated(config);
         if (!loginSuccess) {
           throw new Error("Failed to authenticate session");
         }
@@ -226,7 +229,7 @@ export class BrowserSession {
   /**
    * Ensure the session is authenticated, perform auto-login if needed
    */
-  private async ensureAuthenticated(): Promise<boolean> {
+  private async ensureAuthenticated(config: Config = this.config): Promise<boolean> {
     if (!this.page) {
       throw new Error("Page not initialized");
     }
@@ -254,7 +257,7 @@ export class BrowserSession {
       // Reload page to apply new auth
       log.info(`  🔄 Reloading page...`);
       await (this.page as Page).reload({ waitUntil: "domcontentloaded" });
-      await randomDelay(2000, 3000);
+      await randomDelay(2000, 3000, config);
 
       // Check if it worked
       const nowValid = await this.authManager.validateCookiesExpiry(this.context);
@@ -267,13 +270,14 @@ export class BrowserSession {
     // Need fresh login
     log.warning(`  🔑 Fresh login required`);
 
-    if (CONFIG.autoLoginEnabled) {
+    if (config.autoLoginEnabled) {
       log.info(`  🤖 Attempting auto-login...`);
       const loginSuccess = await this.authManager.loginWithCredentials(
         this.context,
         this.page,
-        CONFIG.loginEmail,
-        CONFIG.loginPassword
+        config.loginEmail,
+        config.loginPassword,
+        config
       );
 
       if (loginSuccess) {
@@ -281,8 +285,9 @@ export class BrowserSession {
         // Navigate back to notebook
         await this.page.goto(this.notebookUrl, {
           waitUntil: "domcontentloaded",
+          timeout: config.browserTimeout,
         });
-        await randomDelay(2000, 3000);
+        await randomDelay(2000, 3000, config);
         return true;
       } else {
         log.error(`  ❌ Auto-login failed`);
@@ -369,11 +374,15 @@ export class BrowserSession {
   /**
    * Ask a question to NotebookLM
    */
-  async ask(question: string, sendProgress?: ProgressCallback): Promise<string> {
+  async ask(
+    question: string,
+    sendProgress?: ProgressCallback,
+    config: Config = this.config
+  ): Promise<string> {
     const askOnce = async (): Promise<string> => {
       if (!this.initialized || !this.page || this.isPageClosedSafe()) {
         log.warning(`  ℹ️  Session not initialized or page missing → re-initializing...`);
-        await this.init();
+        await this.init(config);
       }
 
       log.info(`💬 [${this.sessionId}] Asking: "${question.substring(0, 100)}..."`);
@@ -384,7 +393,7 @@ export class BrowserSession {
       if (!isAuth) {
         log.warning(`  🔑 Session expired, re-authenticating...`);
         await sendProgress?.("Re-authenticating session...", 2, 5);
-        const reAuthSuccess = await this.ensureAuthenticated();
+        const reAuthSuccess = await this.ensureAuthenticated(config);
         if (!reAuthSuccess) {
           throw new Error("Failed to re-authenticate session");
         }
@@ -401,7 +410,7 @@ export class BrowserSession {
       log.success(`  ✅ Captured ${existingResponses.length} existing responses`);
 
       // Find the chat input
-      const inputSelector = await this.findChatInput();
+      const inputSelector = await this.findChatInput(config);
       if (!inputSelector) {
         throw new Error(
           "Could not find visible chat input element. " +
@@ -413,11 +422,12 @@ export class BrowserSession {
       await sendProgress?.("Typing question with human-like behavior...", 2, 5);
       await humanType(page, inputSelector, question, {
         withTypos: true,
-        wpm: Math.max(CONFIG.typingWpmMin, CONFIG.typingWpmMax),
+        wpm: Math.max(config.typingWpmMin, config.typingWpmMax),
+        config,
       });
 
       // Small pause before submitting
-      await randomDelay(500, 1000);
+      await randomDelay(500, 1000, config);
 
       // Submit the question (Enter key)
       log.info(`  📤 Submitting question...`);
@@ -425,16 +435,16 @@ export class BrowserSession {
       await page.keyboard.press("Enter");
 
       // Small pause after submit
-      await randomDelay(1000, 1500);
+      await randomDelay(1000, 1500, config);
 
       // Wait for the response with streaming-stability detection (issue #43).
-      // Timeout comes from CONFIG.answerTimeoutMs so users can tune it via
+      // Timeout comes from effective config so callers can override it via
       // ANSWER_TIMEOUT_MS or browser_options.timeout_ms (issue #14, #27).
       log.info(`  ⏳ Waiting for response (streaming-stability)...`);
       await sendProgress?.("Waiting for NotebookLM response (streaming-stability)...", 3, 5);
       const answer = await waitForStableAnswer(page, {
         question,
-        timeoutMs: CONFIG.answerTimeoutMs,
+        timeoutMs: config.answerTimeoutMs,
         pollIntervalMs: 750,
         ignoreTexts: existingResponses,
       });
@@ -484,7 +494,7 @@ export class BrowserSession {
             }
           }
           this.page = null;
-          await this.init();
+          await this.init(config);
           return await askOnce();
         } catch (e2) {
           log.error(`❌ Recovery failed: ${e2}`);
@@ -584,7 +594,7 @@ export class BrowserSession {
    *
    * Based on Python ask() method from browser_session.py:166-171
    */
-  private async findChatInput(): Promise<string | null> {
+  private async findChatInput(config: Config = this.config): Promise<string | null> {
     if (!this.page) {
       return null;
     }
@@ -630,7 +640,7 @@ export class BrowserSession {
     try {
       await this.page.keyboard.press("Escape").catch(() => undefined);
       await this.page.keyboard.press("Escape").catch(() => undefined);
-      await randomDelay(200, 400);
+      await randomDelay(200, 400, config);
       hit = await tryFind();
       if (hit) {
         log.success(`  ✅ Found chat input after Escape: ${hit}`);
@@ -645,7 +655,7 @@ export class BrowserSession {
           await this.page
             .goto(cleanUrl, { waitUntil: "domcontentloaded", timeout: 15_000 })
             .catch(() => undefined);
-          await randomDelay(800, 1200);
+          await randomDelay(800, 1200, config);
           hit = await tryFind();
           if (hit) {
             log.success(`  ✅ Found chat input after URL clean: ${hit}`);
@@ -659,7 +669,7 @@ export class BrowserSession {
       await this.page
         .goto(this.notebookUrl, { waitUntil: "domcontentloaded", timeout: 20_000 })
         .catch(() => undefined);
-      await randomDelay(1500, 2500);
+      await randomDelay(1500, 2500, config);
       hit = await tryFind();
       if (hit) {
         log.success(`  ✅ Found chat input after reload: ${hit}`);
@@ -773,15 +783,15 @@ export class BrowserSession {
   /**
    * Reset the chat history (start a new conversation)
    */
-  async reset(): Promise<void> {
+  async reset(config: Config = this.config): Promise<void> {
     const resetOnce = async (): Promise<void> => {
       if (!this.initialized || !this.page || this.isPageClosedSafe()) {
-        await this.init();
+        await this.init(config);
       }
       log.info(`🔄 [${this.sessionId}] Resetting chat history...`);
       // Reload the page to clear chat history
       await (this.page as Page).reload({ waitUntil: "domcontentloaded" });
-      await randomDelay(2000, 3000);
+      await randomDelay(2000, 3000, config);
 
       // Wait for interface to be ready again
       await this.waitForNotebookLMReady();
@@ -809,7 +819,7 @@ export class BrowserSession {
           }
         }
         this.page = null;
-        await this.init();
+        await this.init(config);
         await resetOnce();
         return;
       }
