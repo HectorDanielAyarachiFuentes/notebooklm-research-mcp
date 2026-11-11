@@ -1,57 +1,57 @@
 # 📘 Guía de Configuración de NotebookLM MCP para Antigravity IDE
 
-Esta guía detalla los prerrequisitos necesarios, los pasos secuenciales para instalar y levantar el servidor MCP de NotebookLM, y un catálogo final de resolución de problemas con los errores más comunes y sus respectivas soluciones.
+Esta guía detalla los prerrequisitos necesarios, los pasos secuenciales para instalar y levantar el servidor MCP de NotebookLM (`notebooklm-research-mcp`), y un catálogo de resolución de problemas frecuentes.
 
 ---
 
 ## 🛠️ 1. Requisitos Previos (Prerrequisitos)
 
-Antes de comenzar con la instalación del servidor MCP, asegúrate de tener instalados los siguientes programas en tu sistema operativo:
+Antes de comenzar con la instalación del servidor MCP, asegúrate de tener instalados los siguientes programas:
 
-1.  **Antigravity IDE:** El editor de código inteligente donde conectarás tu agente al servidor MCP.
-2.  **Google Chrome o Navegador compatible (como Opera GX):** Necesario para iniciar sesión en NotebookLM y extraer la sesión.
-3.  **Python 3.10 o superior:** Requerido para dar soporte a la librería FastMCP y compilar dependencias. Puedes verificarlo en tu terminal ejecutando `python --version`.
-4.  **Node.js (versión LTS reciente):** Requerido para la correcta ejecución del protocolo MCP en JavaScript.
-5.  **Gestor de paquetes `uv` (o `pip`):** Recomendado para realizar la instalación limpia de las herramientas.
+1. **Antigravity IDE:** El editor donde conectarás tu agente al servidor MCP.
+2. **Node.js (versión LTS reciente):** Requerido para compilar y ejecutar este servidor MCP en TypeScript y el importador `scripts/import_cookies.js`.
+3. **Google Chrome o Navegador Chromium compatible:** Necesario para iniciar sesión en NotebookLM / Gemini Notebook y extraer la sesión.
+4. **Python 3.10+ (`uv` / `pip`, opcional):** Solo si deseas utilizar utilidades legacy como `scripts/auth_helper.py`.
 
 ---
 
 ## 🚀 2. Pasos para Levantar y Configurar el Servidor
 
-Sigue este orden secuencial para poner en funcionamiento tu servidor MCP:
-
-### Paso A: Instalar el servidor
-Abre tu terminal (PowerShell o CMD) y ejecuta el siguiente comando para instalar el servidor globalmente usando `uv`:
+### Paso A: Instalar dependencias y compilar el servidor MCP
+En la raíz del proyecto ejecuta:
 ```powershell
-uv tool install notebooklm-mcp-server
+npm install
+npm run build
 ```
-*(Si no tienes `uv` instalado, puedes usar `pip install notebooklm-mcp-server`).*
 
-### Paso B: Obtener e Importar las Cookies (Dos Métodos Principales)
+### Paso B: Obtener e Importar la Sesión de Google
 
-Elige el método que te resulte más cómodo:
+#### ⚡ Opción 1: Con la Extensión Chrome v2.0 (Recomendado)
+Preserva dominios reales (`google.com`, `accounts.google.com`, `notebook.google.com`, `notebooklm.google.com`), rutas y flags (`httpOnly`, `secure`, `sameSite`), evitando bloqueos de `CookieMismatch`.
 
-#### ⚡ Opción 1: Con la Extensión de 1-Clic (Recomendado)
 1. Abre en Chrome: `chrome://extensions`.
 2. Activa el **Modo de desarrollador** (arriba a la derecha).
 3. Haz clic en **Cargar descomprimida** y selecciona la carpeta `chrome_extension` de este proyecto.
-4. En [NotebookLM](https://notebooklm.google.com), haz 1 clic en el icono de la **`N`** (NotebookLM Sync) para copiar tus cookies al portapapeles.
-5. En Antigravity, dile al asistente: *"conéctate"* o ejecuta `python scripts/auth_helper.py --auto`.
+4. Entra a [Gemini Notebook / NotebookLM](https://notebook.google.com) (o `https://notebooklm.google.com`) con tu sesión activa y pulsa el icono azul **NotebookLM Sync** (v2.0).
+   * Al abrirlo copia automáticamente `state.json` al portapapeles (o puedes pulsar **Guardar `state.json`**).
+5. En tu terminal dentro del proyecto ejecuta:
+   ```powershell
+   node scripts/import_cookies.js --clipboard
+   ```
+   *(O si guardaste el archivo descargado: `node scripts/import_cookies.js ruta/al/state.json`.)*
 
-#### 📝 Opción 2: Modo Manual desde el Navegador (Sin extensiones)
-1. Abre tu navegador y entra a [NotebookLM](https://notebooklm.google.com) con tu sesión iniciada.
-2. Presiona **F12** y selecciona la pestaña **Network** (Red).
-3. Recarga la página (**F5**) y haz clic en cualquier petición de la lista (por ejemplo, `batchexecute`).
-4. En el panel lateral derecho, ve a **Headers** -> **Request Headers** y copia todo el valor de **`cookie:`** (Clic derecho -> *Copy value*).
-5. Pega ese texto en el chat de Antigravity, o ejecuta `python scripts/auth_helper.py` en la terminal.
+#### 🖥️ Opción 2: Login Asistido Directo en Navegador (`setup_auth`)
+1. Desde Antigravity pide al agente ejecutar la herramienta MCP `setup_auth` (con `show_browser: true`).
+2. Inicia sesión manualmente en la ventana de Chrome que se abrirá; `AuthManager` guardará el perfil persistente y `state.json` al llegar a `notebooklm.google.com` o `notebook.google.com`.
 
-#### 🖥️ Opción 3: Modo CLI Automático (notebooklm-mcp-auth)
-1. Cierra completamente Google Chrome en tu sistema.
-2. En la terminal ejecuta: `notebooklm-mcp-auth` o `node dist/index.js`.
-3. Inicia sesión en la ventana de Chrome que se abrirá y el CLI guardará los tokens automáticamente.
+#### 📝 Opción 3: Modo Manual desde DevTools (Fallback Legacy)
+1. Abre [NotebookLM / Gemini Notebook](https://notebook.google.com) y presiona **F12** -> pestaña **Network** (Red).
+2. Recarga (**F5**), selecciona una petición a `batchexecute` y copia el valor del header **`cookie:`**.
+3. Pega la línea en `cookies.txt` en la raíz del proyecto y ejecuta `node scripts/import_cookies.js` (o `python scripts/auth_helper.py --auto` si usas el helper Python).
+   *(Nota: al copiar solo una cabecera plana sin dominios por cookie, Google puede rechazar algunas sesiones modernas con `CookieMismatch`; en ese caso usa la Opción 1 o 2.)*
 
-### Paso D: Configurar el Editor Antigravity
-El archivo `.agents/mcp_config.json` ya viene configurado en la raíz de este proyecto:
+### Paso C: Verificar el Registro en Antigravity
+El archivo `.agents/mcp_config.json` ya apunta al servidor compilado:
 ```json
 {
   "mcpServers": {
@@ -61,18 +61,16 @@ El archivo `.agents/mcp_config.json` ya viene configurado en la raíz de este pr
     }
   }
 }
-Solo asegúrate de haber ejecutado `npm run build` para tener `dist/` actualizado.
-Guarda el archivo de configuración y haz clic en **Refresh** (Actualizar) en la pestaña MCP de tu editor.
+```
+Asegúrate de haber ejecutado `npm run build` (`dist/` actualizado), guarda la configuración y haz clic en **Refresh** en la pestaña MCP de Antigravity.
 
 ---
 
 ## 🔍 3. Guía de Errores Comunes y Soluciones
 
-A continuación, se listan los problemas y bloqueos más frecuentes que ocurren al intentar iniciar el servidor, junto con sus causas y soluciones:
-
 | Error / Síntoma | Causa | Solución |
 | :--- | :--- | :--- |
-| **"Authentication expired"** (a pesar de tener cookies nuevas) | **Incompatibilidad de Dominio:** Google cambió su dominio a `notebook.google.com`. Las cookies pertenecen a ese nuevo dominio, pero la librería tiene hardcodeado el antiguo subdominio `notebooklm.google.com`. | Edita el archivo `api_client.py` en tu librería de Python (`%APPDATA%\uv\tools\notebooklm-mcp-server\Lib\site-packages\notebooklm_mcp\api_client.py`) y cambia la línea 196 a:<br>`BASE_URL = "https://notebook.google.com"` |
-| **`WebSocketBadStatusException`** (al autenticar en modo automático) | **Procesos en segundo plano / Aislamiento de GUI:** Hay procesos de Chrome activos en segundo plano que bloquean la conexión, o el terminal de la IA inició Chrome de forma invisible en una sesión aislada. | 1. Cierra todos tus navegadores Chrome activos.<br>2. Ejecuta `taskkill /F /IM chrome.exe` en tu terminal para forzar el cierre.<br>3. Utiliza la autenticación manual por archivo (`--file`) explicada en el Paso B y C. |
-| **`Required cookies are missing: ['HSID', 'SSID']`** | **Limitación del Sandbox de Javascript:** Intentaste extraer las cookies inyectando un script (`document.cookie` o `cookieStore`) desde la consola del navegador. Google bloquea el acceso a cookies críticas marcadas como `HttpOnly`. | No utilices scripts ni consolas para extraer las cookies. Copia la cookie directamente desde la sección **Request Headers** en la pestaña **Network** (Red) de las herramientas de desarrollo, tal como se detalla en el Paso B. |
-| **`Unknown tool: 'list_notebooks'`** | **Cambio de versión de la herramienta:** El nombre del comando stdio fue actualizado en la última versión de la librería del servidor. | Las herramientas válidas de la versión actual para listar cuadernos son `notebook_list` y `notebook_get`. |
+| **Redirección a `accounts.google.com/CookieMismatch`** | El `state.json` se generó desde una cadena plana de `cookies.txt` adivinando dominios/flags de cookies `__Host-*`. | Usa la extensión **NotebookLM Sync v2.0** exportando `state.json` completo (`node scripts/import_cookies.js --clipboard`) o ejecuta `setup_auth`. |
+| **"Authentication expired"** (a pesar de tener cookies previas) | Expiraron las cookies o el estado guardado superó las 24h en disco. | Recarga NotebookLM, haz clic en **NotebookLM Sync v2.0** y reimporta con `node scripts/import_cookies.js --clipboard` (o ejecuta `re_auth`). |
+| **Procesos bloqueados / Error al lanzar Chrome** | Instancias colgadas de Chrome bloquean el perfil persistente. | Cierra tus ventanas de Chrome o ejecuta `taskkill /F /IM chrome.exe` y reintenta `setup_auth`. |
+| **`Required cookies are missing: ['HSID', 'SSID']`** | Se intentó extraer cookies con `document.cookie` en consola JS (bloqueado para cookies `HttpOnly`). | Usa **NotebookLM Sync v2.0** (permiso `chrome.cookies`) o copia el header desde DevTools -> Network -> `Request Headers`. |

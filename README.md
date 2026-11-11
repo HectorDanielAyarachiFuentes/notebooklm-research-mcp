@@ -20,7 +20,9 @@ notebooklm-mcp/
 │   └── skills/
 │       └── using-notebooklm-mcp/
 │           └── SKILL.md          # Skill paso a paso para tareas de investigación
-├── chrome_extension/             # Extensión de Chrome para sincronizar sesión en 1 clic
+├── chrome_extension/             # Extensión Chrome v2.0 para exportar state.json o header en 1 clic
+│   ├── icons/
+│   ├── cookie-utils.js
 │   ├── manifest.json
 │   ├── popup.html
 │   └── popup.js
@@ -33,7 +35,8 @@ notebooklm-mcp/
 │       ├── Tutorial.txt
 │       └── VIdeo.txt
 ├── scripts/                      # Scripts de utilidad y validación
-│   └── auth_helper.py            # Helper en Python para importar y verificar cookies
+│   ├── import_cookies.js         # Importador de state.json / cookies para MCP TypeScript
+│   └── auth_helper.py            # Helper legacy en Python para verificar cookies
 ├── src/                          # Código fuente TypeScript del servidor MCP
 │   ├── auth/                     # Gestión de perfiles y sesiones de Google
 │   ├── browser/                  # Watchdog y prevención de procesos huérfanos
@@ -59,11 +62,15 @@ npm run build
 ```
 
 ### 2. Conectar tu Cuenta de Google (Elige un método)
-* **Opción A (Extensión de Chrome en 1 Clic - Recomendada):**
+* **Opción A (Extensión Chrome v2.0 en 1 Clic - Recomendada):**
   1. Ve a `chrome://extensions` en Chrome y activa el **Modo de desarrollador**.
   2. Haz clic en **Cargar descomprimida** y selecciona la carpeta [`chrome_extension`](./chrome_extension) de este proyecto.
-  3. Entra a [NotebookLM](https://notebooklm.google.com) y haz 1 clic en el icono **`N`** para copiar tus credenciales.
-  4. En Antigravity dile al asistente: *"Conéctate a NotebookLM"* o ejecuta `python scripts/auth_helper.py --auto`.
+  3. Entra a [NotebookLM / Gemini Notebook](https://notebook.google.com) (o `notebooklm.google.com`) y abre el icono azul de **NotebookLM Sync** (copia automáticamente el `state.json` completo para Playwright).
+  4. Importa la sesión en tu entorno ejecutando:
+     ```powershell
+     node scripts/import_cookies.js --clipboard
+     ```
+     *(También puedes usar el botón **Guardar `state.json`** o **Copiar Header** para scripts legacy como `python scripts/auth_helper.py --auto`.)*
 * **Opción B (Login Asistido):**
   Llama a la herramienta `setup_auth` desde Antigravity para abrir una ventana de navegador donde iniciar sesión directamente.
 

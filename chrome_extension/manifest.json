@@ -1,18 +1,29 @@
 {
   "manifest_version": 3,
   "name": "NotebookLM Sync - Antigravity",
-  "version": "1.0",
-  "description": "Extrae y copia al portapapeles en 1 clic las cookies de NotebookLM para Antigravity IDE",
+  "version": "2.0.0",
+  "description": "Exporta o copia state.json completo para Playwright/NotebookLM MCP y cabecera compatible en 1 clic",
   "permissions": [
     "cookies",
     "clipboardWrite"
   ],
   "host_permissions": [
     "*://*.google.com/*",
-    "*://notebooklm.google.com/*"
+    "*://notebooklm.google.com/*",
+    "*://notebook.google.com/*"
   ],
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
   "action": {
     "default_popup": "popup.html",
-    "default_title": "Sincronizar NotebookLM"
+    "default_title": "Sincronizar NotebookLM",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    }
   }
 }

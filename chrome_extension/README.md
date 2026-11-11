@@ -1,26 +1,32 @@
-# ⚡ NotebookLM Sync - Chrome Extension
+# ⚡ NotebookLM Sync - Chrome Extension (v2.0)
 
-Esta mini-extensión para Google Chrome permite extraer y copiar en **1 solo clic** las cookies de sesión necesarias para conectar Google NotebookLM con Antigravity IDE a través de MCP.
+Extensión Manifest V3 para Google Chrome que extrae cookies reales de Google y NotebookLM **preservando dominio, ruta, expiración y flags (`httpOnly`, `secure`, `sameSite`)** para Playwright / Antigravity MCP, evitando errores de `CookieMismatch`.
 
 ---
 
-## 🚀 Cómo Instalarla (Solo la primera vez - 15 segundos)
+## 🚀 Cómo Instalarla (o Recargarla tras actualizar)
 
-1. En tu navegador Google Chrome, entra a:
-   ```text
-   chrome://extensions
-   ```
-2. Arriba a la derecha, activa el interruptor **Modo de desarrollador** (*Developer mode*).
-3. Arriba a la izquierda, haz clic en el botón **Cargar descomprimida** (*Load unpacked*).
-4. Selecciona esta misma carpeta (`chrome_extension`).
-5. *(Recomendado)* En el icono de la pieza de rompecabezas de extensiones de Chrome, fija el icono **NotebookLM Sync** (la **`N`**) en tu barra superior para tenerlo a mano.
+1. En Google Chrome entra a `chrome://extensions`.
+2. Activa **Modo de desarrollador** (*Developer mode*).
+3. Haz clic en **Cargar descomprimida** (*Load unpacked*) y selecciona esta carpeta (`chrome_extension`).
+   * Si ya la tenías instalada, haz clic en el botón **Recargar** (↻) de la tarjeta.
+4. *(Recomendado)* Fija el icono azul con la **`N`** de **NotebookLM Sync** en tu barra superior.
 
 ---
 
 ## 🎯 Cómo Usarla
 
-1. Abre tu sesión habitual en [NotebookLM / Gemini Notebook](https://notebooklm.google.com).
-2. Haz clic en el icono de la extensión **NotebookLM Sync**.
-3. Verás una confirmación verde indicando que tus cookies fueron copiadas al portapapeles.
-4. Ve a Antigravity y dile a tu agente:
-   > *"Conéctate"* o *"Has tu magia"*
+1. Abre e inicia sesión en [NotebookLM](https://notebooklm.google.com) (asegura que existan `OSID` / `__Secure-OSID`).
+2. Haz clic en **NotebookLM Sync**:
+   * Verás cuántas de las `9` cookies críticas de Google + NotebookLM están activas.
+   * Por defecto copia automáticamente el **`state.json`** completo de Playwright al portapapeles (con fallback seguro si el popup aún no recibe foco).
+3. Importa directamente en el MCP Node/TypeScript:
+   * Desde portapapeles:
+     ```bash
+     node scripts/import_cookies.js --clipboard
+     ```
+   * O usando **Guardar `state.json`** y pasando la ruta al archivo descargado:
+     ```bash
+     node scripts/import_cookies.js path/to/state.json
+     ```
+4. También puedes usar **Copiar Header** (o cambiar el selector superior a `Cookie Header (Legacy/txt)`) si necesitas formato cabecera plano para `scripts/auth_helper.py`.

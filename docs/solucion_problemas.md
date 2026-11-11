@@ -4,15 +4,15 @@ Esta guía recopila las dudas, bloqueos y soluciones habituales para NotebookLM 
 
 ---
 
-### 1. "Authentication expired" o Sesión Caída
-* **Causa:** Las cookies de sesión de Google caducan periódicamente por seguridad.
+### 1. "Authentication expired", Sesión Caída o `CookieMismatch`
+* **Causa:** Las cookies de sesión de Google caducaron, o se importó un string plano sin dominios/flags exactos (`CookieMismatch` en `accounts.google.com`).
 * **Solución rápida:**
-  1. En [NotebookLM](https://notebooklm.google.com), haz 1 clic en el icono de la extensión **`N`** (NotebookLM Sync).
-  2. En el chat de Antigravity dile: *"Conéctate"* o ejecuta en tu terminal:
+  1. En [NotebookLM / Gemini Notebook](https://notebook.google.com), abre el icono azul de **NotebookLM Sync v2.0** para copiar el `state.json` completo.
+  2. Ejecuta en la terminal del proyecto:
      ```powershell
-     python scripts/auth_helper.py --auto
+     node scripts/import_cookies.js --clipboard
      ```
-  3. O ejecuta la herramienta `setup_auth` desde el agente para abrir una ventana de login asistido.
+  3. Como alternativa directa, ejecuta la herramienta `setup_auth` (o `re_auth`) desde el agente para iniciar sesión en el navegador del perfil persistente.
 
 ---
 
