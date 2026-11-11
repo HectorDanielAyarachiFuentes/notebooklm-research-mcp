@@ -786,8 +786,9 @@ export class BrowserSession {
       // Wait for interface to be ready again
       await this.waitForNotebookLMReady();
 
-      // Reset message count
+      // Reset message count and cached turns
       this.messageCount = 0;
+      this.history = [];
       this.updateActivity();
 
       log.success(`✅ [${this.sessionId}] Chat history reset`);

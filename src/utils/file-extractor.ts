@@ -45,11 +45,16 @@ const SUPPORTED_TEXT_EXTENSIONS = new Set([
  * Extracts clean text content from a local file (PDF or text/code formats)
  * ready for ingestion into NotebookLM.
  */
-export async function extractLocalFile(filePath: string, customTitle?: string): Promise<ExtractedFile> {
+export async function extractLocalFile(
+  filePath: string,
+  customTitle?: string
+): Promise<ExtractedFile> {
   const resolvedPath = path.resolve(filePath);
 
   if (!fs.existsSync(resolvedPath)) {
-    throw new Error(`File not found: "${resolvedPath}". Please provide a valid absolute or relative path.`);
+    throw new Error(
+      `File not found: "${resolvedPath}". Please provide a valid absolute or relative path.`
+    );
   }
 
   const stat = await fs.promises.stat(resolvedPath);
@@ -69,12 +74,16 @@ export async function extractLocalFile(filePath: string, customTitle?: string): 
       const textResult = await parser.getText();
       await parser.destroy();
 
-      const text = typeof textResult === "string" ? textResult : (textResult as any)?.text || "";
+      const text = typeof textResult === "string" ? textResult : textResult?.text || "";
       if (!text.trim()) {
-        throw new Error(`PDF file "${defaultTitle}" appears to be empty or contains only scanned images (no selectable text).`);
+        throw new Error(
+          `PDF file "${defaultTitle}" appears to be empty or contains only scanned images (no selectable text).`
+        );
       }
 
-      log.success(`✅ [file-extractor] Successfully extracted ${text.length} characters from PDF "${defaultTitle}"`);
+      log.success(
+        `✅ [file-extractor] Successfully extracted ${text.length} characters from PDF "${defaultTitle}"`
+      );
       return {
         text,
         title: defaultTitle,
@@ -83,7 +92,7 @@ export async function extractLocalFile(filePath: string, customTitle?: string): 
       };
     } catch (err) {
       const msg = err instanceof Error ? err.message : String(err);
-      throw new Error(`Failed to extract text from PDF "${defaultTitle}": ${msg}`);
+      throw new Error(`Failed to extract text from PDF "${defaultTitle}": ${msg}`, { cause: err });
     }
   }
 
@@ -94,7 +103,9 @@ export async function extractLocalFile(filePath: string, customTitle?: string): 
         throw new Error(`File "${defaultTitle}" is empty.`);
       }
 
-      log.success(`✅ [file-extractor] Read ${text.length} characters from text file "${defaultTitle}"`);
+      log.success(
+        `✅ [file-extractor] Read ${text.length} characters from text file "${defaultTitle}"`
+      );
       return {
         text,
         title: defaultTitle,
@@ -103,7 +114,7 @@ export async function extractLocalFile(filePath: string, customTitle?: string): 
       };
     } catch (err) {
       const msg = err instanceof Error ? err.message : String(err);
-      throw new Error(`Failed to read file "${defaultTitle}": ${msg}`);
+      throw new Error(`Failed to read file "${defaultTitle}": ${msg}`, { cause: err });
     }
   }
 

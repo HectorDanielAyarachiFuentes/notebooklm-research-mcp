@@ -362,27 +362,39 @@ class NotebookLMMCPServer {
             break;
 
           case "add_sources_batch":
-            result = await this.toolHandlers.handleAddSourcesBatch(args as any);
+            result = await this.toolHandlers.handleAddSourcesBatch(
+              args as Parameters<ToolHandlers["handleAddSourcesBatch"]>[0]
+            );
             break;
 
           case "list_sources":
-            result = await this.toolHandlers.handleListSources(args as any);
+            result = await this.toolHandlers.handleListSources(
+              args as Parameters<ToolHandlers["handleListSources"]>[0]
+            );
             break;
 
           case "find_contradictions":
-            result = await this.toolHandlers.handleFindContradictions(args as any);
+            result = await this.toolHandlers.handleFindContradictions(
+              args as Parameters<ToolHandlers["handleFindContradictions"]>[0]
+            );
             break;
 
           case "identify_knowledge_gaps":
-            result = await this.toolHandlers.handleIdentifyKnowledgeGaps(args as any);
+            result = await this.toolHandlers.handleIdentifyKnowledgeGaps(
+              args as Parameters<ToolHandlers["handleIdentifyKnowledgeGaps"]>[0]
+            );
             break;
 
           case "export_research_dossier":
-            result = await this.toolHandlers.handleExportResearchDossier(args as any);
+            result = await this.toolHandlers.handleExportResearchDossier(
+              args as Parameters<ToolHandlers["handleExportResearchDossier"]>[0]
+            );
             break;
 
           case "export_citations":
-            result = await this.toolHandlers.handleExportCitations(args as any);
+            result = await this.toolHandlers.handleExportCitations(
+              args as Parameters<ToolHandlers["handleExportCitations"]>[0]
+            );
             break;
 
           case "generate_audio":

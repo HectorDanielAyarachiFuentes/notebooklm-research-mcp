@@ -32,7 +32,8 @@ export const exportResearchDossierTool: Tool = {
       },
       title: {
         type: "string",
-        description: "Document title header for the dossier (e.g. 'State of the Art: LLM Reasoning Architectures').",
+        description:
+          "Document title header for the dossier (e.g. 'State of the Art: LLM Reasoning Architectures').",
       },
       executive_summary: {
         type: "string",
@@ -40,7 +41,8 @@ export const exportResearchDossierTool: Tool = {
       },
       include_citations: {
         type: "boolean",
-        description: "Include granular citations and source references in the exported file. Default: true.",
+        description:
+          "Include granular citations and source references in the exported file. Default: true.",
       },
       ...sharedNotebookTargeting,
     },
@@ -70,7 +72,8 @@ export const exportCitationsTool: Tool = {
       },
       destination_path: {
         type: "string",
-        description: "Optional file path to save the generated citations (e.g. './references.bib').",
+        description:
+          "Optional file path to save the generated citations (e.g. './references.bib').",
       },
       ...sharedNotebookTargeting,
     },
@@ -84,7 +87,4 @@ export const exportCitationsTool: Tool = {
   },
 };
 
-export const exportTools: Tool[] = [
-  exportResearchDossierTool,
-  exportCitationsTool,
-];
+export const exportTools: Tool[] = [exportResearchDossierTool, exportCitationsTool];

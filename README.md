@@ -61,14 +61,14 @@ npm run build
 ### 2. Conectar tu Cuenta de Google (Elige un método)
 * **Opción A (Extensión de Chrome en 1 Clic - Recomendada):**
   1. Ve a `chrome://extensions` en Chrome y activa el **Modo de desarrollador**.
-  2. Haz clic en **Cargar descomprimida** y selecciona la carpeta [`chrome_extension`](file:///c:/Users/Ramoncito/Downloads/notebooklm-mcp-main/chrome_extension) de este proyecto.
+  2. Haz clic en **Cargar descomprimida** y selecciona la carpeta [`chrome_extension`](./chrome_extension) de este proyecto.
   3. Entra a [NotebookLM](https://notebooklm.google.com) y haz 1 clic en el icono **`N`** para copiar tus credenciales.
   4. En Antigravity dile al asistente: *"Conéctate a NotebookLM"* o ejecuta `python scripts/auth_helper.py --auto`.
 * **Opción B (Login Asistido):**
   Llama a la herramienta `setup_auth` desde Antigravity para abrir una ventana de navegador donde iniciar sesión directamente.
 
 ### 3. ¡A Investigar!
-El archivo [`.agents/mcp_config.json`](file:///c:/Users/Ramoncito/Downloads/notebooklm-mcp-main/.agents/mcp_config.json) ya registra este servidor en tu espacio de trabajo de Antigravity. Simplemente pídele al agente en lenguaje natural:
+El archivo [`.agents/mcp_config.json`](./.agents/mcp_config.json) ya registra este servidor en tu espacio de trabajo de Antigravity. Simplemente pídele al agente en lenguaje natural:
 > *"Investiga sobre este tema en NotebookLM, sube estos papers y compárame las fuentes buscando contradicciones."*
 
 ---
@@ -90,7 +90,7 @@ El archivo [`.agents/mcp_config.json`](file:///c:/Users/Ramoncito/Downloads/note
 
 ## 📖 Documentación Adicional
 
-* 📘 [Guía de Instalación y Primeros Pasos](file:///c:/Users/Ramoncito/Downloads/notebooklm-mcp-main/docs/guia_instalacion.md)
-* 🛠️ [Catálogo de las 26 Herramientas MCP](file:///c:/Users/Ramoncito/Downloads/notebooklm-mcp-main/docs/catalogo_herramientas.md)
-* 🔧 [Solución de Problemas Frecuentes](file:///c:/Users/Ramoncito/Downloads/notebooklm-mcp-main/docs/solucion_problemas.md)
-* 🎓 [Tutoriales y Material de Referencia](file:///c:/Users/Ramoncito/Downloads/notebooklm-mcp-main/docs/tutoriales)
+* 📘 [Guía de Instalación y Primeros Pasos](./docs/guia_instalacion.md)
+* 🛠️ [Catálogo de las 26 Herramientas MCP](./docs/catalogo_herramientas.md)
+* 🔧 [Solución de Problemas Frecuentes](./docs/solucion_problemas.md)
+* 🎓 [Tutoriales y Material de Referencia](./docs/tutoriales)

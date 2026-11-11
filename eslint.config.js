@@ -3,7 +3,7 @@ import tseslint from "typescript-eslint";
 
 export default tseslint.config(
   {
-    ignores: ["dist/**", "node_modules/**", "Old_Python_Vesion/**", "docs/**"],
+    ignores: ["dist/**", "node_modules/**", "Old_Python_Vesion/**", "docs/**", "herramientas/**"],
   },
   js.configs.recommended,
   ...tseslint.configs.recommended,

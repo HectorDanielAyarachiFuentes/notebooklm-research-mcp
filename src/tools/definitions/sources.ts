@@ -58,7 +58,8 @@ export const addSourceTool: Tool = {
       },
       path: {
         type: "string",
-        description: "Local file path when `type === 'file'` (e.g. 'C:/papers/study.pdf'). Overrides `content` if provided.",
+        description:
+          "Local file path when `type === 'file'` (e.g. 'C:/papers/study.pdf'). Overrides `content` if provided.",
       },
       title: {
         type: "string",
@@ -88,10 +89,10 @@ export const generateAudioTool: Tool = {
   description:
     "Trigger podcast-style Audio Overview generation for a notebook.\n\n" +
     "**Async by default** — returns immediately with one of:\n" +
-    "  • `status: \"started\"` — generation just kicked off\n" +
-    "  • `status: \"in_progress\"` — a generation was already running; " +
+    '  • `status: "started"` — generation just kicked off\n' +
+    '  • `status: "in_progress"` — a generation was already running; ' +
     "this call attached to it\n" +
-    "  • `status: \"ready\"` (with `alreadyExisted: true`) — an Audio " +
+    '  • `status: "ready"` (with `alreadyExisted: true`) — an Audio ' +
     "Overview already existed; nothing was triggered\n\n" +
     "Generation typically takes 2–10 minutes. **Workflow:**\n" +
     "  1. `generate_audio` → returns immediately\n" +
@@ -107,9 +108,9 @@ export const generateAudioTool: Tool = {
       custom_prompt: {
         type: "string",
         description:
-          "Optional focus prompt for the Audio Overview, e.g. \"Focus on the " +
-          "API authentication flow and skip pricing\". Passed into the " +
-          "NotebookLM \"Customize\" sub-dialog before generation starts.",
+          'Optional focus prompt for the Audio Overview, e.g. "Focus on the ' +
+          'API authentication flow and skip pricing". Passed into the ' +
+          'NotebookLM "Customize" sub-dialog before generation starts.',
       },
       wait_for_completion: {
         type: "boolean",
@@ -172,7 +173,7 @@ export const downloadAudioTool: Tool = {
   name: "download_audio",
   description:
     "Save the completed Audio Overview to disk as a `.m4a` file. **Pre-" +
-    "condition:** `get_audio_status` must report `status: \"ready\"`. " +
+    'condition:** `get_audio_status` must report `status: "ready"`. ' +
     "Calling this before generation completes returns an error message " +
     "explaining what to do.\n\n" +
     "The file lands in `destination_dir` with NotebookLM's suggested " +
@@ -261,7 +262,8 @@ export const addSourcesBatchTool: Tool = {
 
 export const listSourcesTool: Tool = {
   name: "list_sources",
-  description: "List all source titles currently indexed and present in the active NotebookLM notebook sidebar.",
+  description:
+    "List all source titles currently indexed and present in the active NotebookLM notebook sidebar.",
   inputSchema: {
     type: "object",
     properties: {

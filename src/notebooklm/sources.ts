@@ -101,9 +101,7 @@ export async function addSource(page: Page, input: AddSourceInput): Promise<AddS
       const currentUrl = page.url();
       const currentUuid = currentUrl.match(/notebook\/([a-f0-9-]+)/)?.[1];
       if (currentUuid && currentUuid !== expectedUuid) {
-        log.error(
-          `  ❌ Notebook redirect: expected ${expectedUuid}, got ${currentUuid}`
-        );
+        log.error(`  ❌ Notebook redirect: expected ${expectedUuid}, got ${currentUuid}`);
         return {
           success: false,
           type: requestedType,
@@ -208,17 +206,16 @@ async function openAddSourceOverlay(page: Page): Promise<void> {
 
   // Try the sidebar button first — fastest path on a populated notebook.
   try {
-    await page
-      .locator(joinAlt(Selectors.sources.addButton))
-      .first()
-      .click({ timeout: 5_000 });
+    await page.locator(joinAlt(Selectors.sources.addButton)).first().click({ timeout: 5_000 });
     await page
       .locator(Selectors.sources.overlayPane)
       .first()
       .waitFor({ state: "visible", timeout: 8_000 });
     return;
   } catch (err) {
-    log.warning(`  ⚠️  Add-source button click failed (${err}), trying ?addSource=true URL fallback`);
+    log.warning(
+      `  ⚠️  Add-source button click failed (${err}), trying ?addSource=true URL fallback`
+    );
   }
 
   // URL fallback — useful when the sidebar button is hidden or covered.
@@ -407,7 +404,10 @@ export async function listSources(page: Page): Promise<string[]> {
     const count = await elements.count();
     const titles: string[] = [];
     for (let i = 0; i < count; i++) {
-      const text = await elements.nth(i).innerText().catch(() => "");
+      const text = await elements
+        .nth(i)
+        .innerText()
+        .catch(() => "");
       const clean = text.split("\n")[0].trim();
       if (clean && !titles.includes(clean)) {
         titles.push(clean);
@@ -435,7 +435,10 @@ export interface BatchAddSourceResult {
 /**
  * Ingest multiple sources in batch into the active notebook.
  */
-export async function addSourcesBatch(page: Page, inputs: AddSourceInput[]): Promise<BatchAddSourceResult> {
+export async function addSourcesBatch(
+  page: Page,
+  inputs: AddSourceInput[]
+): Promise<BatchAddSourceResult> {
   const results: Array<{ title?: string; type: SourceType; success: boolean; error?: string }> = [];
   let succeeded = 0;
   let failed = 0;

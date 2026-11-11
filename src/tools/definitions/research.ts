@@ -29,7 +29,8 @@ export const findContradictionsTool: Tool = {
     properties: {
       focus_topic: {
         type: "string",
-        description: "Optional specific topic, hypothesis, or metric to examine for conflicting claims. If omitted, checks the entire source corpus.",
+        description:
+          "Optional specific topic, hypothesis, or metric to examine for conflicting claims. If omitted, checks the entire source corpus.",
       },
       show_browser: {
         type: "boolean",
@@ -58,7 +59,8 @@ export const identifyKnowledgeGapsTool: Tool = {
     properties: {
       research_goal: {
         type: "string",
-        description: "The overarching research goal or question (e.g. 'Evaluating the safety and efficacy of compound X for condition Y').",
+        description:
+          "The overarching research goal or question (e.g. 'Evaluating the safety and efficacy of compound X for condition Y').",
       },
       show_browser: {
         type: "boolean",
@@ -76,7 +78,4 @@ export const identifyKnowledgeGapsTool: Tool = {
   },
 };
 
-export const researchTools: Tool[] = [
-  findContradictionsTool,
-  identifyKnowledgeGapsTool,
-];
+export const researchTools: Tool[] = [findContradictionsTool, identifyKnowledgeGapsTool];
